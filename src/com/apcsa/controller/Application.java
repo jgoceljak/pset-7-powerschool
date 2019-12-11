@@ -1,5 +1,7 @@
 package com.apcsa.controller;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Scanner;
 import com.apcsa.data.PowerSchool;
 import com.apcsa.model.User;
@@ -18,7 +20,7 @@ public class Application {
         this.in = new Scanner(System.in);
 
         try {
-            PowerSchool.initialize(false);
+            PowerSchool.initialize(true);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -50,7 +52,20 @@ public class Application {
                     ? activeUser : null;
 
                 if (isFirstLogin() && !activeUser.isRoot()) {
-                    // first-time users need to change their passwords from the default provided
+                    System.out.print("Enter a new password: ");
+                    String newPassword = in.next();
+                    activeUser.setPassword(newPassword);
+                    String auth = activeUser.getPassword();
+                    Connection conn;
+					try {
+						conn = PowerSchool.getConnection();
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+                    PowerSchool.updateAuth(conn, username, auth);
+                    System.out.println("Your password has been changed to " + newPassword);
+                    
                 }
 
                 // create and show the user interface

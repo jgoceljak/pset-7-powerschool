@@ -3,6 +3,8 @@ package com.apcsa.model;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import com.apcsa.controller.Utils;
+
 public class User {
 
     private int userId;
@@ -76,6 +78,10 @@ public class User {
         return password;
     }
 
+    public void setPassword(String password) {
+    	this.password = Utils.getHash(password);
+    }
+    
     /**
      * @return lastLogin
      */

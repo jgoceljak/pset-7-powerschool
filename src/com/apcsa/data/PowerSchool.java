@@ -176,7 +176,7 @@ public class PowerSchool {
      * @throws SQLException
      */
 
-    private static Connection getConnection() throws SQLException {
+    public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(PROTOCOL + DATABASE_URL);
     }
 
@@ -194,6 +194,29 @@ public class PowerSchool {
 
             conn.setAutoCommit(false);
             stmt.setString(1, ts.toString());
+            stmt.setString(2, username);
+
+            if (stmt.executeUpdate() == 1) {
+                conn.commit();
+
+                return 1;
+            } else {
+                conn.rollback();
+
+                return -1;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+            return -1;
+        }
+    }
+    
+    public static int updateAuth(Connection conn, String username, String auth) {
+        try (PreparedStatement stmt = conn.prepareStatement(QueryUtils.UPDATE_AUTH_SQL)) {
+
+            conn.setAutoCommit(false);
+            stmt.setString(1, auth);
             stmt.setString(2, username);
 
             if (stmt.executeUpdate() == 1) {
