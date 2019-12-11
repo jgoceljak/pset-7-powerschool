@@ -20,7 +20,7 @@ public class Application {
         this.in = new Scanner(System.in);
 
         try {
-            PowerSchool.initialize(true);
+            PowerSchool.initialize(false);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -56,15 +56,14 @@ public class Application {
                     String newPassword = in.next();
                     activeUser.setPassword(newPassword);
                     String auth = activeUser.getPassword();
-                    Connection conn;
-					try {
-						conn = PowerSchool.getConnection();
+					try (Connection conn = PowerSchool.getConnection()){
+						PowerSchool.updateAuth(conn, username, auth);
+	                    System.out.println("Your password has been changed to " + newPassword);
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-                    PowerSchool.updateAuth(conn, username, auth);
-                    System.out.println("Your password has been changed to " + newPassword);
+                    
                     
                 }
 
