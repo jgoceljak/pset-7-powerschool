@@ -14,8 +14,16 @@ public class Student extends User {
     private String firstName;
     private String lastName;
     
-    public Student(User user, ResultSet rsUser) {
-    	System.out.println(rsUser.getString(1));
+    public Student(User user, ResultSet rs) throws SQLException {
+    	super(user.getUserId(), user.getAccountType(), user.getUsername(), user.getPassword(), user.getLastLogin());
+    	
+    	this.studentId = rs.getInt("student_id");
+    	this.classRank = rs.getInt("class_rank");
+    	this.gradeLevel = rs.getInt("grade_level");
+    	this.graduationYear = rs.getInt("graduation");
+    	this.gpa = rs.getDouble("gpa");
+    	this.firstName = rs.getString("first_name");
+    	this.lastName = rs.getString("last_name");
     }
     
 }
