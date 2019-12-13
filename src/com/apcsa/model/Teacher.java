@@ -10,6 +10,7 @@ public class Teacher extends User {
     private int departmentId;
     private String firstName;
     private String lastName;
+    private String departmentName;
     
     public Teacher(User user, ResultSet rs) throws SQLException {
     	super(user.getUserId(), user.getAccountType(), user.getUsername(), user.getPassword(), user.getLastLogin());
