@@ -13,7 +13,7 @@ public class Teacher extends User {
     private String departmentName;
     
     public Teacher(User user, ResultSet rs) throws SQLException {
-    	super(user.getUserId(), user.getAccountType(), user.getUsername(), user.getPassword(), user.getLastLogin());
+    	super(user);
     	
     	this.teacherId = rs.getInt("teacher_id");
     	this.departmentId = rs.getInt("department_id");

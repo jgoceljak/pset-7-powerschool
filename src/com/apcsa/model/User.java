@@ -27,6 +27,21 @@ public class User {
              rs.getString("last_login")
         );
     }
+    
+    /**
+     * Creates an instance of the User class.
+     * 
+     * @param user an existing User object
+     */
+    
+    public User(User user) {
+        this(user.getUserId(),
+             user.getAccountType(),
+             user.getUsername(),
+             user.getPassword(),
+             user.getLastLogin()
+        );
+    }
 
     /**
      * Creates an instance of the User class.

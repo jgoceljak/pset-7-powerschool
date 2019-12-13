@@ -16,7 +16,7 @@ public class Student extends User {
     private String lastName;
     
     public Student(User user, ResultSet rs) throws SQLException {
-    	super(user.getUserId(), user.getAccountType(), user.getUsername(), user.getPassword(), user.getLastLogin());
+    	super(user);
     	
     	this.studentId = rs.getInt("student_id");
     	this.classRank = rs.getInt("class_rank");
