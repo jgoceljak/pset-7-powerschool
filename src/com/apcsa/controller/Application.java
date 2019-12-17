@@ -2,8 +2,10 @@ package com.apcsa.controller;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Scanner;
 import com.apcsa.data.PowerSchool;
+import com.apcsa.model.Teacher;
 import com.apcsa.model.User;
 
 public class Application {
@@ -92,6 +94,21 @@ public class Application {
             showAdministratorUI();
         } else {
             // TODO - add cases for teacher, student, and unknown
+        }
+    }
+    
+    private void viewFaculty() {        
+        ArrayList<Teacher> teachers = PowerSchool.getTeachers();
+        
+        if (teachers.isEmpty()) {
+            System.out.println("\nNo teachers to display.");
+        } else {
+            System.out.println();
+            
+            int i = 1;
+            for (Teacher teacher : teachers) {
+                System.out.println(i++ + ". " + teacher.getName() + " / " + teacher.getDepartmentName());
+            } 
         }
     }
     
