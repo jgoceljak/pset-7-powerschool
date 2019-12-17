@@ -12,6 +12,7 @@ public class Application {
     private User activeUser;
     
     enum RootAction { PASSWORD, DATABASE, LOGOUT, SHUTDOWN }
+    enum AdministratorAction { FACULTY, DEPARTMENT, STUDENTS, GRADE, COURSE, PASSWORD, LOGOUT }
 
     /**
      * Creates an instance of the Application class, which is responsible for interacting
@@ -22,7 +23,7 @@ public class Application {
         this.in = new Scanner(System.in);
 
         try {
-            PowerSchool.initialize(true);
+            PowerSchool.initialize(false);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -149,6 +150,56 @@ public class Application {
     }
     
     /*
+     * Displays an interface for root users.
+     */
+        
+    private void showAdministratorUI() {
+        while (activeUser != null) {
+            switch (getAdministratorMenuSelection()) {
+                case FACULTY: viewFaculty(); break;
+                case DEPARTMENT: viewFacultyByDepartment(); break;
+                case STUDENTS: viewStudents(); break;
+                case GRADE: viewStudentsByGrade(); break;
+                case COURSE: viewStudentsByCourse(); break;
+                case PASSWORD: changePassword(false); break;
+                case LOGOUT: logout(); break;
+                default: System.out.println("\nInvalid selection."); break;
+            }
+        }
+    }
+    
+    /*
+     * Retrieves a root user's menu selection.
+     * 
+     * @return the menu selection
+     */
+
+    private AdministratorAction getAdministratorMenuSelection() {
+        System.out.println();
+        
+        System.out.println("[1] View faculty.");
+        System.out.println("[2] View faculty by department.");
+        System.out.println("[3] View student enrollment.");
+        System.out.println("[4] View student enrollment by grade.");
+        System.out.println("[5] View student enrollment by course.");
+        System.out.println("[6] Change password.");
+        System.out.println("[7] Logout.");
+        System.out.print("\n::: ");
+
+        switch (Utils.getInt(in, -1)) {
+            case 1: return AdministratorAction.FACULTY;
+            case 2: return AdministratorAction.DEPARTMENT;
+            case 3: return AdministratorAction.STUDENTS;
+            case 4: return AdministratorAction.GRADE;
+            case 5: return AdministratorAction.COURSE;
+            case 6: return AdministratorAction.PASSWORD;
+            case 7: return AdministratorAction.LOGOUT;
+        }
+        
+        return null;
+    }
+    
+    /*
      * Resets the database to its factory settings.
      */
     
@@ -232,6 +283,7 @@ public class Application {
     public boolean isFirstLogin() {
         return activeUser.getLastLogin().equals("0000-00-00 00:00:00.000");
     }
+    
 
     /////// MAIN METHOD ///////////////////////////////////////////////////////////////////
 

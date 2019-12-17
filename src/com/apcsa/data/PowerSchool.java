@@ -234,6 +234,25 @@ public class PowerSchool {
             return -1;
         }
     }
+    
+    /**
+     * Resets a user's password.
+     * 
+     * @param username the user's username
+     */
+    
+    public static void resetPassword(String username) {
+        //
+        // get a connection to the database
+        // create a prepared statement (both of thses should go in a try-with-resources statement)
+        //
+        // insert parameters into the prepared statement
+        //      - the user's hashed username
+        //      - the user's plaintext username
+        //
+        // execute the update statement
+        //
+    }
 
     /*
      * Builds the database. Executes a SQL script from a configuration file to
