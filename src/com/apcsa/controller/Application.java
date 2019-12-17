@@ -196,6 +196,11 @@ public class Application {
     
 
 	private void viewStudentsByCourse() {
+		try {
+		getCourseSelection();
+		}catch(SQLException e) {
+			
+		}
 	    //
 	    // get a list of students by course
 	    //      to do this, you'll need to prompt the user to choose a course (more on this later)
@@ -281,7 +286,7 @@ public class Application {
 	        System.out.print("\nCourse No.: ");
 	        courseNo = in.next();
 	        
-	        if (/* is a valid course number */) {
+	        if (isValidCourse(courseNo)) {
 	            valid = true;
 	        } else {
 	            System.out.println("\nCourse not found.");
@@ -291,7 +296,17 @@ public class Application {
 	    return courseNo;
 	}
 
-    /*
+    private boolean isValidCourse(String courseId) {
+    	boolean validCourse = false;
+		for(int i=1; i <  PowerSchool.getNumberOfCourses(); i++) {
+			if(PowerSchool.getCourseNumber(i).equals(courseId)) {
+				validCourse = true;
+			}
+		}
+		return validCourse;
+	}
+
+	/*
      * Allows a root user to reset another user's password.
      */
     
@@ -453,7 +468,6 @@ public class Application {
 
     public static void main(String[] args) {
         Application app = new Application();
-
         app.startup();
     }
 }
