@@ -39,4 +39,22 @@ public class Teacher extends User {
         this.departmentName = rs.getString("title");
     }
     
+    /**
+     * @return departmentName
+     */
+
+    public String getDepartmentName() {
+        return departmentName;
+    }
+
+    /**
+     * Retrieves the student's name formatted as LAST, FIRST.
+     * 
+     * @return the formatted name
+     */
+
+    public String getName() {
+        return lastName + ", " + firstName;
+    }
+    
 }
