@@ -218,6 +218,31 @@ public class Application {
 	    //      the old password will either be something the use entered (if it isn't his or her first login) or
 	    //      it'll be the same as their username
 	}
+	
+	/*
+	 * Retrieves the user's department selection.
+	 * 
+	 * @return the selected department
+	 */
+
+	private int getDepartmentSelection() {
+	    int selection = -1;
+	    System.out.println("\nChoose a department.");
+	    
+	    while (selection < 1 || selection > 6) {
+	        System.out.println("\n[1] Computer Science.");
+	        System.out.println("[2] English.");
+	        System.out.println("[3] History.");
+	        System.out.println("[4] Mathematics.");
+	        System.out.println("[5] Physical Education.");
+	        System.out.println("[6] Science.");
+	        System.out.print("\n::: ");
+	        
+	        selection = Utils.getInt(in, -1);
+	    }
+	    
+	    return selection;
+	}
 
     /*
      * Allows a root user to reset another user's password.
