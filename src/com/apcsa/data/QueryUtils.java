@@ -59,4 +59,16 @@ public class QueryUtils {
     public static final String GET_STUDENT_SQL =
         "SELECT * FROM students " +
             "WHERE user_id = ?";
+    
+    /*
+     * Retrieves all teachers.
+     */
+
+    public static final String GET_ALL_TEACHERS_SQL =
+        "SELECT * FROM " +
+            "teachers, departments " +
+        "WHERE " +
+            "teachers.department_id = departments.department_id " +
+        "ORDER BY " +
+            "last_name, first_name";
 }
