@@ -45,7 +45,7 @@ public class Application {
             String password = in.next();
 
             // if login is successful, update generic user to administrator, teacher, or student
-
+            try {
             if (login(username, password)) {
                 activeUser = activeUser.isAdministrator()
                     ? PowerSchool.getAdministrator(activeUser) : activeUser.isTeacher()
@@ -71,8 +71,12 @@ public class Application {
             } else {
                 System.out.println("\nInvalid username and/or password.");
             }
+            }catch(Exception e){
+            	shutdown(e);
+            }
         }
     }
+    
     /**
      * Displays an user type-specific menu with which the user
      * navigates and interacts with the application.
