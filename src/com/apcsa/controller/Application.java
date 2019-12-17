@@ -85,11 +85,13 @@ public class Application {
 
     public void createAndShowUI() {
         System.out.println("\nHello, again, " + activeUser.getFirstName() + "!");
-
+        
         if (activeUser.isRoot()) {
             showRootUI();
+        } else if (activeUser.isAdministrator()) {
+            showAdministratorUI();
         } else {
-            // TODO - add cases for admin, teacher, student, and unknown
+            // TODO - add cases for teacher, student, and unknown
         }
     }
     
