@@ -266,6 +266,30 @@ public class Application {
 	    
 	    return selection + 8;   // +8 because you want a value between 9 and 12
 	}
+	
+	/*
+	 * Retrieves a user's course selection.
+	 * 
+	 * @return the selected course
+	 */
+
+	private String getCourseSelection() throws SQLException {
+	    boolean valid = false;
+	    String courseNo = null;
+	    
+	    while (!valid) {
+	        System.out.print("\nCourse No.: ");
+	        courseNo = in.next();
+	        
+	        if (/* is a valid course number */) {
+	            valid = true;
+	        } else {
+	            System.out.println("\nCourse not found.");
+	        }
+	    }
+	    
+	    return courseNo;
+	}
 
     /*
      * Allows a root user to reset another user's password.
