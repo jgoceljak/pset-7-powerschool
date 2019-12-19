@@ -310,6 +310,13 @@ public class Application {
      */
     
     private void resetPassword() {
+    	System.out.print("Username: ");
+    	String username = in.next();
+    	if (Utils.confirm(in, "Are you sure you want to reset the password for " + username + "?  (y/n) ")) {
+            if (in != null) {
+                PowerSchool.resetPassword(username);
+            }
+    	}
         //
         // prompt root user to enter username of user whose password needs to be reset
         //
@@ -411,8 +418,7 @@ public class Application {
         
         System.out.println("Encountered unrecoverable error. Shutting down...\n");
         System.out.println(e.getMessage());
-                
-        System.out.println("\nGoodbye!");
+      
         System.exit(0);
     }
 

@@ -276,16 +276,22 @@ public class PowerSchool {
      */
     
     public static void resetPassword(String username) {
-        //
-        // get a connection to the database
-        // create a prepared statement (both of thses should go in a try-with-resources statement)
-        //
-        // insert parameters into the prepared statement
-        //      - the user's hashed username
-        //      - the user's plaintext username
-        //
-        // execute the update statement
-        //
+    	try (Connection conn = getConnection();
+                PreparedStatement stmt = conn.prepareStatement(QueryUtils.UPDATE_AUTH_SQL)) {
+
+    		conn.setAutoCommit(false);
+            stmt.setString(1, Utils.getHash(username));
+            stmt.setString(2, username);
+
+            if (stmt.executeUpdate() == 1) {
+                conn.commit();
+            } else {
+                conn.rollback();
+
+            }
+           } catch (SQLException e) {
+               e.printStackTrace();
+           }
     }
     
     /**
