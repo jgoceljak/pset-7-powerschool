@@ -57,4 +57,8 @@ public class Teacher extends User {
         return lastName + ", " + firstName;
     }
     
+    public String getFirstName() {
+		return firstName;
+	}
+    
 }
