@@ -30,6 +30,10 @@ public class Student extends User {
 	public double getGpa() {
 		return gpa;
 	}
+	
+	public String getFirstName() {
+		return firstName;
+	}
 
 	public void setClassRank(int i) {
 		// TODO Auto-generated method stub

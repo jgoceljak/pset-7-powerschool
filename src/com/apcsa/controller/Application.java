@@ -69,7 +69,6 @@ public class Application {
 						e.printStackTrace();
 					}    
                 }
-                
                 createAndShowUI();
             } else {
                 System.out.println("\nInvalid username and/or password.");
