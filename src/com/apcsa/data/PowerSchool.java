@@ -275,7 +275,7 @@ public class PowerSchool {
      * @param username the user's username
      */
     
-    public static void resetPassword(String username) {
+    public static boolean resetPassword(String username) {
     	try (Connection conn = getConnection();
                 PreparedStatement stmt = conn.prepareStatement(QueryUtils.UPDATE_AUTH_SQL)) {
 
@@ -285,12 +285,15 @@ public class PowerSchool {
 
             if (stmt.executeUpdate() == 1) {
                 conn.commit();
+                return true;
             } else {
                 conn.rollback();
+               return false;
 
             }
            } catch (SQLException e) {
                e.printStackTrace();
+               return false;
            }
     }
     

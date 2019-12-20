@@ -314,7 +314,11 @@ public class Application {
     	String username = in.next();
     	if (Utils.confirm(in, "Are you sure you want to reset the password for " + username + "?  (y/n) ")) {
             if (in != null) {
-                PowerSchool.resetPassword(username);
+            	if(PowerSchool.resetPassword(username)) {
+            		System.out.println("Successfully reset password for " + username + ".");
+            	}else {
+            		System.out.println("Password reset failed");
+            	}
             }
     	}
     }
