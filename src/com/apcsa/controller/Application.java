@@ -13,7 +13,7 @@ public class Application {
     private Scanner in;
     private User activeUser;
     
-    enum RootAction { PASSWORD, DATABASE, LOGOUT, SHUTDOWN }
+    enum RootAction { PASSWORD, DATABASE, LOGOUT, SHUTDOWN, INVALID }
     enum AdministratorAction { FACULTY, DEPARTMENT, STUDENTS, GRADE, COURSE, PASSWORD, LOGOUT }
 
     /**
@@ -133,7 +133,7 @@ public class Application {
             case 2: return RootAction.DATABASE;
             case 3: return RootAction.LOGOUT;
             case 4: return RootAction.SHUTDOWN;
-            default: return null;
+            default: return RootAction.INVALID;
         }
      }
     
