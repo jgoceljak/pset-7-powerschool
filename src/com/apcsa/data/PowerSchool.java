@@ -246,6 +246,31 @@ public class PowerSchool {
         }
     }
     
+    public static int resetLastLogin(String username) {
+    	try (Connection conn = getConnection();
+                PreparedStatement stmt = conn.prepareStatement(QueryUtils.UPDATE_LAST_LOGIN_SQL)){
+    	
+            conn.setAutoCommit(false);
+            stmt.setString(1,"0000-00-00 00:00:00.000");
+            stmt.setString(2, username);
+
+            if (stmt.executeUpdate() == 1) {
+                conn.commit();
+
+                return 1;
+            } else {
+                conn.rollback();
+
+                return -1;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+
+            return -1;
+        }
+    }
+    
+    
     public static int updateAuth(Connection conn, String username, String auth) {
         try (PreparedStatement stmt = conn.prepareStatement(QueryUtils.UPDATE_AUTH_SQL)) {
 
