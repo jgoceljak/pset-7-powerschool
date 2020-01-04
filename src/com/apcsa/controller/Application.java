@@ -379,13 +379,14 @@ public class Application {
      */
     
     private void factoryReset() {
-        //
-        // ask root user to confirm intent to reset the database
-        //
-        // if confirmed...
-        //      call database initialize method with parameter of true
-        //      print success message
-        //
+    	if(Utils.confirm(in, "\nAre you sure you want to reset all settings and data? (y/n)")){
+    		 try {
+    	            PowerSchool.initialize(true);
+    	            System.out.println("\nSuccessfully reset database.");
+    	        } catch (Exception e) {
+    	            e.printStackTrace();
+    	        }
+    	}
     }
     
     /*
