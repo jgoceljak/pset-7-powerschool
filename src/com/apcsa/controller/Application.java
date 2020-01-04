@@ -400,12 +400,9 @@ public class Application {
      */
 
     private void logout() {
-        //
-        // ask root user to confirm intent to logout
-        //
-        // if confirmed...
-        //      set activeUser to null
-        //
+    	if(Utils.confirm(in, "\nAre you sure you want to logout? (y/n)")) {
+    		activeUser = null;
+    	}
     }
     
     private void shutdown(Exception e) {
