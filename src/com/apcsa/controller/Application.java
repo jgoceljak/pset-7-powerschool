@@ -153,9 +153,19 @@ public class Application {
     }
     
     
-    private void viewFacultyByDepartment() {
+    private void viewFacultyByDepartment() {    	
+    	 ArrayList<Teacher> teachers = PowerSchool.getTeachersByDepartment(getDepartmentSelection());
     	
-    	int department = getDepartmentSelection();
+    	if (teachers.isEmpty()) {
+            System.out.println("\nNo teachers to display.");
+        } else {
+            System.out.println();
+            
+            int i = 1;
+            for (Teacher teacher : teachers) {
+                System.out.println(i++ + ". " + teacher.getName() + " / " + teacher.getDepartmentName());
+            } 
+        }
     	
         //
         // get a list of teachers by department (this requires a database call)

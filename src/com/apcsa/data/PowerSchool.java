@@ -294,33 +294,6 @@ public class PowerSchool {
         }
     }
     
-    /**
-     * Resets a user's password.
-     * 
-     * @param username the user's username
-     */
-    
-    public static boolean resetPassword(String username) {
-    	try (Connection conn = getConnection();
-                PreparedStatement stmt = conn.prepareStatement(QueryUtils.UPDATE_AUTH_SQL)) {
-
-    		conn.setAutoCommit(false);
-            stmt.setString(1, Utils.getHash(username));
-            stmt.setString(2, username);
-
-            if (stmt.executeUpdate() == 1) {
-                conn.commit();
-                return true;
-            } else {
-                conn.rollback();
-               return false;
-
-            }
-           } catch (SQLException e) {
-               e.printStackTrace();
-               return false;
-           }
-    }
     
     /**
      * Retrieves all faculty members.
@@ -345,7 +318,52 @@ public class PowerSchool {
         
         return teachers;
     }
+     
+     public static ArrayList<Teacher> getTeachersByDepartment(int department) {
+         ArrayList<Teacher> teachers = new ArrayList<Teacher>();
+         
+         try (Connection conn = getConnection();
+        		 PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_ALL_TEACHERS_SQL)) {
+        	 stmt.setString(1, String.valueOf(department));        
+             try (ResultSet rs = stmt.executeQuery()) {
 
+                     teachers.add(new Teacher(rs));                 
+             }
+         } catch (SQLException e) {
+             e.printStackTrace();
+         }
+         
+         return teachers;
+     }
+     
+     /**
+      * Resets a user's password.
+      * 
+      * @param username the user's username
+      */
+     
+     public static boolean resetPassword(String username) {
+     	try (Connection conn = getConnection();
+                 PreparedStatement stmt = conn.prepareStatement(QueryUtils.UPDATE_AUTH_SQL)) {
+
+     		conn.setAutoCommit(false);
+             stmt.setString(1, Utils.getHash(username));
+             stmt.setString(2, username);
+
+             if (stmt.executeUpdate() == 1) {
+                 conn.commit();
+                 return true;
+             } else {
+                 conn.rollback();
+                return false;
+
+             }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return false;
+            }
+     }
+     
     /*
      * Builds the database. Executes a SQL script from a configuration file to
      * create the tables, setup the primary and foreign keys, and load sample data.
