@@ -79,12 +79,12 @@ public class QueryUtils {
         "ORDER BY " +
             "last_name, first_name";
 
-
+//needs an inner join to work
 	public static final String GET_TEACHERS_BY_DEPARTMENT_SQL =
 		"SELECT * FROM " +
 		    "teachers, departments " +
 		"WHERE " +
-		    "teachers.department_id = ?" +
+		    "departments.department_id = ?" +
 		"ORDER BY " +
 		    "last_name, first_name";
 }
