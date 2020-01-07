@@ -39,5 +39,9 @@ public class Student extends User {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public String getName() {
+        return lastName + ", " + firstName;
+    }
     
 }
