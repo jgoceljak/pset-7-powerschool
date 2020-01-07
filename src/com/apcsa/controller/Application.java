@@ -166,16 +166,7 @@ public class Application {
                 System.out.println(i++ + ". " + teacher.getName() + " / " + teacher.getDepartmentName());
             } 
         }
-    	
-        //
-        // get a list of teachers by department (this requires a database call)
-        //      to do this, you'll need to prompt the user to choose a department (more on this later)
-        //
-        // if list of teachers is empty...
-        //      print a message saying exactly that
-        // otherwise...
-        //      print the list of teachers by name an department (just like last time)
-        //
+
     }
 
     /*

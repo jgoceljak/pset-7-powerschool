@@ -323,7 +323,7 @@ public class PowerSchool {
          ArrayList<Teacher> teachers = new ArrayList<Teacher>();
          
          try (Connection conn = getConnection();
-        		 PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_ALL_TEACHERS_SQL)) {
+        		 PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_TEACHERS_BY_DEPARTMENT_SQL)) {
         	 stmt.setString(1, String.valueOf(department));        
              try (ResultSet rs = stmt.executeQuery()) {
 
