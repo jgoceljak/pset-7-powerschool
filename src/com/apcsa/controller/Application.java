@@ -216,20 +216,24 @@ public class Application {
     
 
 	private void viewStudentsByCourse() {
+		String courseNo = "";
 		try {
-		getCourseSelection();
+		courseNo = getCourseSelection();
 		}catch(SQLException e) {
 			
 		}
-	    //
-	    // get a list of students by course
-	    //      to do this, you'll need to prompt the user to choose a course (more on this later)
-	    //
-	    // if the list of students is empty...
-	    //      print a message saying exactly that
-	    // otherwise...
-	    //      print the list of students by name and grade point average
-	    //
+		ArrayList<Student> students = PowerSchool.getStudentsByCourse(courseNo);
+    	
+    	if (students.isEmpty()) {
+            System.out.println("\nNo students to display.");
+        } else {
+            System.out.println();
+            
+            int i = 1;
+            for (Student student : students) {
+                System.out.println(i++ + ". " + student.getName() + " / " + student.getClassRank());
+            } 
+	}
 	}
 	
 	private void changePassword(boolean firstLogin) {
