@@ -201,16 +201,6 @@ public class Application {
                 System.out.println(i++ + ". " + student.getName() + " / " + student.getClassRank());
             } 
         }
-    	
-        //
-        // get list of students by grade
-        //      to do this, you'll need to prompt the user to choose a grade level (more on this later)
-        //
-        // if the list of students is empty...
-        //      print a message saying exactly that
-        // otherwise...
-        //      print the list of students by name and class rank
-        //
     }
     
     
@@ -231,22 +221,37 @@ public class Application {
             
             int i = 1;
             for (Student student : students) {
-                System.out.println(i++ + ". " + student.getName() + " / " + student.getClassRank());
+                System.out.println(i++ + ". " + student.getName() + " / " + fixGPA(student));
             } 
+        }
 	}
+	
+	private String fixGPA(Student student) {
+		double GPA = student.getGpa();
+		if(GPA == -1) {
+			return "--";
+		}else {
+			return String.valueOf(GPA);
+		}
 	}
 	
 	private void changePassword() {
-		System.out.print("\nEnter a new password: ");
+		System.out.print("\nEnter current password: ");
+		String currentPassword = in.next();
+		System.out.print("Enter a new password: ");
         String newPassword = in.next();
-        activeUser.setPassword(newPassword);
-        String auth = activeUser.getPassword();
-		try (Connection conn = PowerSchool.getConnection()){
-			PowerSchool.updateAuth(conn, activeUser.getUsername(), auth);
-            System.out.println("\nYour password has been changed to " + newPassword);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}    
+        if(activeUser.getPassword().equals(Utils.getHash(currentPassword))) {
+        	activeUser.setPassword(newPassword);
+            String auth = activeUser.getPassword();
+    		try (Connection conn = PowerSchool.getConnection()){
+    			PowerSchool.updateAuth(conn, activeUser.getUsername(), auth);
+                System.out.println("\nYour password has been changed to " + newPassword);
+    		} catch (SQLException e) {
+    			e.printStackTrace();
+    		}
+        }else {
+        	System.out.println("\nInvalid current password.");
+        }
 	}
 	
 	/*
