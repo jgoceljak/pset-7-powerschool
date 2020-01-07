@@ -56,7 +56,7 @@ public class Student extends User {
         return lastName + ", " + firstName;
     }
 	
-	public double getGraduationYear() {
+	public int getGraduationYear() {
 		return graduationYear;
 	}
     

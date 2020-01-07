@@ -89,7 +89,7 @@ public class QueryUtils {
 		    "last_name, first_name";
 	
 	public static final String GET_STUDENTS =
-	        "SELECT last_name, first_name, graduation FROM " +
+	        "SELECT * FROM " +
 	            "students " +
 	        "ORDER BY " +
 	            "last_name, first_name";
