@@ -57,13 +57,13 @@ public class Application {
                     ? activeUser : null;
 
                 if (isFirstLogin() && !activeUser.isRoot()) {
-                    System.out.print("Enter a new password: ");
+                    System.out.print("\nEnter a new password: ");
                     String newPassword = in.next();
                     activeUser.setPassword(newPassword);
                     String auth = activeUser.getPassword();
 					try (Connection conn = PowerSchool.getConnection()){
 						PowerSchool.updateAuth(conn, username, auth);
-	                    System.out.println("Your password has been changed to " + newPassword);
+	                    System.out.println("\nYour password has been changed to " + newPassword);
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -154,6 +154,9 @@ public class Application {
     
     
     private void viewFacultyByDepartment() {
+    	
+    	int department = getDepartmentSelection();
+    	
         //
         // get a list of teachers by department (this requires a database call)
         //      to do this, you'll need to prompt the user to choose a department (more on this later)
