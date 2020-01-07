@@ -236,16 +236,17 @@ public class Application {
 	}
 	}
 	
-	private void changePassword(boolean firstLogin) {
-	    // if it isn't the user's first login...
-	    //      ask the user for his or her current password
-	    //
-	    // ask all users (first login or not) to enter a new password
-	    //
-	    // change the password (this will require a call to the database)
-	    //      this requires three pieces of information: the username, the old password, and the new password
-	    //      the old password will either be something the use entered (if it isn't his or her first login) or
-	    //      it'll be the same as their username
+	private void changePassword() {
+		System.out.print("\nEnter a new password: ");
+        String newPassword = in.next();
+        activeUser.setPassword(newPassword);
+        String auth = activeUser.getPassword();
+		try (Connection conn = PowerSchool.getConnection()){
+			PowerSchool.updateAuth(conn, activeUser.getUsername(), auth);
+            System.out.println("\nYour password has been changed to " + newPassword);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}    
 	}
 	
 	/*
@@ -361,7 +362,7 @@ public class Application {
                 case STUDENTS: viewStudents(); break;
                 case GRADE: viewStudentsByGrade(); break;
                 case COURSE: viewStudentsByCourse(); break;
-                case PASSWORD: changePassword(false); break;
+                case PASSWORD: changePassword(); break;
                 case LOGOUT: logout(); break;
                 default: System.out.println("\nInvalid selection."); break;
             }
