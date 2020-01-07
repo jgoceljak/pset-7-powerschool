@@ -167,7 +167,6 @@ public class Application {
                 System.out.println(i++ + ". " + teacher.getName() + " / " + teacher.getDepartmentName());
             } 
         }
-
     }
 
     /*
@@ -178,7 +177,7 @@ public class Application {
     	ArrayList<Student> students = PowerSchool.getStudents();
         
         if (students.isEmpty()) {
-            System.out.println("\nNo teachers to display.");
+            System.out.println("\nNo students to display.");
         } else {
             System.out.println();
             
@@ -190,6 +189,19 @@ public class Application {
     }
     
     private void viewStudentsByGrade() {
+    	ArrayList<Student> students = PowerSchool.getStudentsByGrade(getGradeSelection());
+    	
+    	if (students.isEmpty()) {
+            System.out.println("\nNo students to display.");
+        } else {
+            System.out.println();
+            
+            int i = 1;
+            for (Student student : students) {
+                System.out.println(i++ + ". " + student.getName() + " / " + student.getClassRank());
+            } 
+        }
+    	
         //
         // get list of students by grade
         //      to do this, you'll need to prompt the user to choose a grade level (more on this later)

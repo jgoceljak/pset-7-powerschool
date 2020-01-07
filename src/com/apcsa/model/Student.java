@@ -59,5 +59,9 @@ public class Student extends User {
 	public int getGraduationYear() {
 		return graduationYear;
 	}
+	
+	public int getClassRank() {
+		return classRank;
+	}
     
 }

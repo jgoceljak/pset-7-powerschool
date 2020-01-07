@@ -93,4 +93,12 @@ public class QueryUtils {
 	            "students " +
 	        "ORDER BY " +
 	            "last_name, first_name";
+	
+	public static final String GET_STUDENTS_BY_GRADE =
+	        "SELECT * FROM " +
+	            "students " +
+	        "WHERE "+
+	            "grade_level = ?" +
+	        "ORDER BY " +
+	            "last_name, first_name";
 }
