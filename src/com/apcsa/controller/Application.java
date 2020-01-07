@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import com.apcsa.data.PowerSchool;
+import com.apcsa.model.Student;
 import com.apcsa.model.Teacher;
 import com.apcsa.model.User;
 
@@ -174,14 +175,18 @@ public class Application {
      */
 
     private void viewStudents() {
-        //
-        // get a list of students
-        //
-        // if list of students is empty...
-        //      print a message saying exactly that
-        // otherwise...
-        //      print the list of students by name and graduation year
-        //
+    	ArrayList<Student> students = PowerSchool.getStudents();
+        
+        if (students.isEmpty()) {
+            System.out.println("\nNo teachers to display.");
+        } else {
+            System.out.println();
+            
+            int i = 1;
+            for (Student student : students) {
+                System.out.println(i++ + ". " + student.getName() + " / " + student.getGraduationYear());
+            } 
+        }
     }
     
     private void viewStudentsByGrade() {

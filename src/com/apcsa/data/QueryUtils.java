@@ -87,4 +87,10 @@ public class QueryUtils {
 		    "teachers.department_id = departments.department_id  AND departments.department_id = ?" +
 		"ORDER BY " +
 		    "last_name, first_name";
+	
+	public static final String GET_STUDENTS =
+	        "SELECT last_name, first_name, graduation FROM " +
+	            "students " +
+	        "ORDER BY " +
+	            "last_name, first_name";
 }
