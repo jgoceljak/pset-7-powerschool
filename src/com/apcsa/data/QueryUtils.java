@@ -84,7 +84,7 @@ public class QueryUtils {
 		"SELECT * FROM " +
 		    "teachers, departments " +
 		"WHERE " +
-		    "departments.department_id = ?" +
+		    "teachers.department_id = departments.department_id  AND departments.department_id = ?" +
 		"ORDER BY " +
 		    "last_name, first_name";
 }
