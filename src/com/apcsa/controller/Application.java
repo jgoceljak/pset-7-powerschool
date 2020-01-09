@@ -15,8 +15,8 @@ public class Application {
     private User activeUser;
     
     enum RootAction { PASSWORD, DATABASE, LOGOUT, SHUTDOWN, INVALID }
-    enum AdministratorAction { FACULTY, DEPARTMENT, STUDENTS, GRADE, COURSE, PASSWORD, LOGOUT }
-
+    enum AdministratorAction { FACULTY, DEPARTMENT, STUDENTS, GRADE, COURSE, PASSWORD, LOGOUT, INVALID }
+    enum TeacherAction { COURSE, ADD, DELETE, GRADE, PASSWORD, LOGOUT, INVALID }
     /**
      * Creates an instance of the Application class, which is responsible for interacting
      * with the user via the command line interface.
@@ -92,8 +92,10 @@ public class Application {
             showRootUI();
         } else if (activeUser.isAdministrator()) {
             showAdministratorUI();
-        } else {
-            // TODO - add cases for teacher, student, and unknown
+        } else if(activeUser.isTeacher()){
+        	showTeacherUI();
+        }else {
+        	
         }
     }
     
@@ -400,11 +402,73 @@ public class Application {
             case 5: return AdministratorAction.COURSE;
             case 6: return AdministratorAction.PASSWORD;
             case 7: return AdministratorAction.LOGOUT;
+            default: return AdministratorAction.INVALID;
         }
-        
-        return null;
     }
     
+    private void showTeacherUI() {
+        while (activeUser != null) {
+            switch (getTeacherMenuSelection()) {
+                case COURSE: viewEnrollmentByCourse(); break;
+                case ADD: addAssignment(); break;
+                case DELETE: deleteAssignment(); break;
+                case GRADE: enterGrade(); break;
+                case PASSWORD: changePassword(); break;
+                case LOGOUT: logout(); break;
+                default: System.out.println("\nInvalid selection."); break;
+            }
+        }
+    }
+    
+    /*
+     * Retrieves a teacher's menu selection.
+     * 
+     * @return the menu selection
+     */
+
+	private TeacherAction getTeacherMenuSelection() {
+        System.out.println();
+        
+        System.out.println("[1] View faculty.");
+        System.out.println("[2] View faculty by department.");
+        System.out.println("[3] View student enrollment.");
+        System.out.println("[4] View student enrollment by grade.");
+        System.out.println("[5] View student enrollment by course.");
+        System.out.println("[6] Change password.");
+        System.out.println("[7] Logout.");
+        System.out.print("\n::: ");
+
+        switch (Utils.getInt(in, -1)) {
+            case 1: return TeacherAction.COURSE;
+            case 2: return TeacherAction.ADD;
+            case 3: return TeacherAction.DELETE;
+            case 4: return TeacherAction.GRADE;
+            case 5: return TeacherAction.PASSWORD;
+            case 6: return TeacherAction.LOGOUT;
+            default: return TeacherAction.INVALID;
+        }
+    }
+	
+    private void enterGrade() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void deleteAssignment() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void addAssignment() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void viewEnrollmentByCourse() {
+		// TODO Auto-generated method stub
+		
+	}
+	
     /*
      * Resets the database to its factory settings.
      */
