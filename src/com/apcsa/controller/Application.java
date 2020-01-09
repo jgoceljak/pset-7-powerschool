@@ -410,7 +410,7 @@ public class Application {
         }
     }
     
-    private void showTeacherUI() {
+    private void showTeacherUI() {   	
         while (activeUser != null) {
             switch (getTeacherMenuSelection()) {
                 case COURSE: viewEnrollmentByCourse(); break;
@@ -453,7 +453,6 @@ public class Application {
     }
 	
     private void enterGrade() {
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -468,11 +467,27 @@ public class Application {
 	}
 
 	private void viewEnrollmentByCourse() {
-		// TODO Auto-generated method stub
-		
+		String courseNumber = getCourseSelectionTeacher();
 	}
 	
-	 private void showStudentUI() {
+	 private String getCourseSelectionTeacher() {
+		 Teacher teacher = PowerSchool.getTeacher(activeUser);
+		 ArrayList<String> courses = PowerSchool.getCourses(teacher.getDepartmentId());
+		 System.out.println();
+		 int j = 1;
+         for (String i: courses) {
+             System.out.println("["+ j++ + "] " + i);
+         }
+         int courseSelection = -1;
+         while(courseSelection <= 0 || courseSelection > courses.size()) {
+        	 courseSelection = Utils.getInt(in, -1);
+         }
+         System.out.println(courses.get(courseSelection-1));
+
+		return "";
+	}
+
+	private void showStudentUI() {
 	        while (activeUser != null) {
 	            switch (getStudentMenuSelection()) {
 	                case GRADES: viewCourseGrades(); break;

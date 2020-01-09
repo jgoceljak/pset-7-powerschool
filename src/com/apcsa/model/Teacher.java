@@ -62,4 +62,8 @@ public class Teacher extends User {
 		return firstName;
 	}
     
+    public int getDepartmentId() {
+		return departmentId;
+	}
+    
 }

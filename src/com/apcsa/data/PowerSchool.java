@@ -127,7 +127,7 @@ public class PowerSchool {
      * @return the teacher account if it exists
      */
 
-    public static User getTeacher(User user) {
+    public static Teacher getTeacher(User user) {
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_TEACHER_SQL)) {
 
@@ -142,7 +142,7 @@ public class PowerSchool {
             e.printStackTrace();
         }
 
-        return user;
+        return null;
     }
     
     public static int getNumberOfCourses() {
@@ -455,4 +455,22 @@ public class PowerSchool {
             e.printStackTrace();
         }
     }
+
+	public static ArrayList<String> getCourses(int departmentId) {
+		ArrayList<String> courses = new ArrayList<String>();
+		
+		try (Connection conn = getConnection();
+       		 PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_COURSES)) {
+       	 stmt.setString(1, String.valueOf(departmentId));        
+            try (ResultSet rs = stmt.executeQuery()) {
+           	 while(rs.next()) {
+                    courses.add(rs.getString("course_no"));                 
+           	 }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+		
+		return courses;
+	}
 }

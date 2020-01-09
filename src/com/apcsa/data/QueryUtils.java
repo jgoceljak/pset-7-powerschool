@@ -101,6 +101,7 @@ public class QueryUtils {
 	            "grade_level = ?" +
 	        "ORDER BY " +
 	            "last_name, first_name";
+	
 	public static final String GET_STUDENTS_BY_COURSE =
 	        "SELECT * FROM " +
 	            "students, courses, course_grades " +
@@ -108,4 +109,9 @@ public class QueryUtils {
 	            "courses.course_no = ? AND courses.course_id = course_grades.course_id AND course_grades.student_id = students.student_id " +
 	        "ORDER BY " +
 	            "last_name, first_name";
+	
+	public static final String GET_COURSES =
+            "SELECT * FROM courses, teachers " +
+             "WHERE teachers.department_id =? AND teachers.department_id = courses.department_id "+
+             "ORDER BY courses.course_id";
 }
