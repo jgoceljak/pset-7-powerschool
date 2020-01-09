@@ -468,23 +468,38 @@ public class Application {
 
 	private void viewEnrollmentByCourse() {
 		String courseNumber = getCourseSelectionTeacher();
+		ArrayList<Student> students = PowerSchool.getStudentsByCourse(courseNumber);
+    	
+    	if (students.isEmpty()) {
+            System.out.println("\nNo students to display.");
+        } else {
+            System.out.println();
+            
+            int i = 1;
+            for (Student student : students) {
+                System.out.println(i++ + ". " + student.getName() + " / " + fixGPA(student));
+            } 
+        }
+		
 	}
 	
 	 private String getCourseSelectionTeacher() {
 		 Teacher teacher = PowerSchool.getTeacher(activeUser);
 		 ArrayList<String> courses = PowerSchool.getCourses(teacher.getDepartmentId());
-		 System.out.println();
-		 int j = 1;
-         for (String i: courses) {
-             System.out.println("["+ j++ + "] " + i);
-         }
+		 System.out.println();		 
          int courseSelection = -1;
          while(courseSelection <= 0 || courseSelection > courses.size()) {
+        	 int j = 1;
+             for (String i: courses) {
+                 System.out.println("["+ j++ + "] " + i);
+             }
+        	 System.out.print("\n::: ");
         	 courseSelection = Utils.getInt(in, -1);
+        	 if(courseSelection <= 0 || courseSelection > courses.size()) {
+        		 System.out.println("\nInvalid Selection.\n");
+        	 }
          }
-         System.out.println(courses.get(courseSelection-1));
-
-		return "";
+		return courses.get(courseSelection-1);
 	}
 
 	private void showStudentUI() {
