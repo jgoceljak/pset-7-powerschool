@@ -17,6 +17,8 @@ public class Application {
     enum RootAction { PASSWORD, DATABASE, LOGOUT, SHUTDOWN, INVALID }
     enum AdministratorAction { FACULTY, DEPARTMENT, STUDENTS, GRADE, COURSE, PASSWORD, LOGOUT, INVALID }
     enum TeacherAction { COURSE, ADD, DELETE, GRADE, PASSWORD, LOGOUT, INVALID }
+    enum StudentAction { GRADES, COURSE, PASSWORD, LOGOUT, INVALID }
+    
     /**
      * Creates an instance of the Application class, which is responsible for interacting
      * with the user via the command line interface.
@@ -94,6 +96,8 @@ public class Application {
             showAdministratorUI();
         } else if(activeUser.isTeacher()){
         	showTeacherUI();
+        }else if(activeUser.isStudent()){
+        	showStudentUI();
         }else {
         	
         }
@@ -468,6 +472,52 @@ public class Application {
 		
 	}
 	
+	 private void showStudentUI() {
+	        while (activeUser != null) {
+	            switch (getStudentMenuSelection()) {
+	                case GRADES: viewCourseGrades(); break;
+	                case COURSE: viewAssignmentGradesByCourses(); break;
+	                case PASSWORD: changePassword(); break;
+	                case LOGOUT: logout(); break;
+	                default: System.out.println("\nInvalid selection."); break;
+	            }
+	        }
+	    }
+	    
+	    /*
+	     * Retrieves a teacher's menu selection.
+	     * 
+	     * @return the menu selection
+	     */
+
+		private StudentAction getStudentMenuSelection() {
+	        System.out.println();
+	        
+	        System.out.println("[1] View course grades.");
+	        System.out.println("[2] View assignment grades by course.");
+	        System.out.println("[3] Change password.");
+	        System.out.println("[4] Logout.");
+	        System.out.print("\n::: ");
+
+	        switch (Utils.getInt(in, -1)) {
+	            case 1: return StudentAction.GRADES;
+	            case 2: return StudentAction.COURSE;
+	            case 3: return StudentAction.PASSWORD;
+	            case 4: return StudentAction.LOGOUT;
+	            default: return StudentAction.INVALID;
+	        }
+	    }
+		
+		private void viewCourseGrades() {
+			// TODO Auto-generated method stub
+			
+		}
+
+			private void viewAssignmentGradesByCourses() {
+			// TODO Auto-generated method stub
+			
+		}
+		
     /*
      * Resets the database to its factory settings.
      */
