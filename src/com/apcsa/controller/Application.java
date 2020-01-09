@@ -429,13 +429,12 @@ public class Application {
 	private TeacherAction getTeacherMenuSelection() {
         System.out.println();
         
-        System.out.println("[1] View faculty.");
-        System.out.println("[2] View faculty by department.");
-        System.out.println("[3] View student enrollment.");
-        System.out.println("[4] View student enrollment by grade.");
-        System.out.println("[5] View student enrollment by course.");
-        System.out.println("[6] Change password.");
-        System.out.println("[7] Logout.");
+        System.out.println("[1] View enrollment by course.");
+        System.out.println("[2] Add assignment.");
+        System.out.println("[3] Delete assignment.");
+        System.out.println("[4] Enter grade.");
+        System.out.println("[5] Change password.");
+        System.out.println("[6] Logout.");
         System.out.print("\n::: ");
 
         switch (Utils.getInt(in, -1)) {
@@ -505,9 +504,12 @@ public class Application {
             in.close();
         }
         
-        System.out.println("Encountered unrecoverable error. Shutting down...\n");
+        System.out.println("\nEncountered unrecoverable error. Shutting down...\n");
         System.out.println(e.getMessage());
-      
+        
+        
+        System.out.println("\nGoodbye!");
+        
         System.exit(0);
     }
 
