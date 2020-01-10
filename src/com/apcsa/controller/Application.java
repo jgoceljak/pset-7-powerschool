@@ -14,7 +14,6 @@ public class Application {
 
     private Scanner in;
     private User activeUser;
-    private static int assignmentId = initialAssignmentId();
     
     enum RootAction { PASSWORD, DATABASE, LOGOUT, SHUTDOWN, INVALID }
     enum AdministratorAction { FACULTY, DEPARTMENT, STUDENTS, GRADE, COURSE, PASSWORD, LOGOUT, INVALID }
@@ -544,12 +543,12 @@ public class Application {
 		return PowerSchool.getCourseId(courseNumber);
 	} 
 
-	private static int initialAssignmentId() {
-		return PowerSchool.getLastAssignmentId();
-	}
-	
 	private int getAssignmentId() {		
-		return Application.assignmentId++;
+		if(PowerSchool.getNumberOfAssignemnts() == 0) {
+			return 1;
+		}else {
+			return PowerSchool.getlastAssignmentId() + 1;
+		}
 	}
 
 	private void deleteAssignment() {

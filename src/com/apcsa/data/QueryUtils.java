@@ -123,6 +123,12 @@ public class QueryUtils {
     		"INSERT INTO assignments " +
     		"VALUES(?, ?, ?, ?, ?, ?, ?)";
 	
-	public static final String GET_LAST_ASSIGNMENT_ID = 
+	public static final String GET_NUMBER_OF_ASSIGNMENTS = 
 			"SELECT COUNT(*) FROM assignments";
+	
+	public static final String GET_LAST_ASSIGNMENT_ID = 
+			"SELECT * FROM "+
+					"assignments "+
+				"ORDER BY assignment_id DESC";
+	
 }

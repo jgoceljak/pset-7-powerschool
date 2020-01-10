@@ -24,7 +24,7 @@ public class PowerSchool {
 
     private final static String PROTOCOL = "jdbc:sqlite:";
     private final static String DATABASE_URL = "data/powerschool.db";
-
+    
     /**
      * Initializes the database if needed (or if requested).
      *
@@ -161,9 +161,9 @@ public class PowerSchool {
            return 1;
     }
     
-    public static int getLastAssignmentId() {
+    public static int getNumberOfAssignemnts() {
     	try (Connection conn = getConnection();
-                PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_LAST_ASSIGNMENT_ID)) {
+                PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_NUMBER_OF_ASSIGNMENTS)) {
 
                try (ResultSet rs = stmt.executeQuery()) {
                    if (rs.next()) {
@@ -531,4 +531,18 @@ public class PowerSchool {
                return -1;
            }
     }
+
+	public static int getlastAssignmentId() {
+		try (Connection conn = getConnection();
+	       		 PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_LAST_ASSIGNMENT_ID)) {    
+	            try (ResultSet rs = stmt.executeQuery()) {
+	           	 if(rs.next()) {
+	                    return rs.getInt("assignment_id");             
+	           	 }
+	            }
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+		return 0;
+	}
 }
