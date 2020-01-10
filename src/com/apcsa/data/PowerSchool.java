@@ -161,6 +161,22 @@ public class PowerSchool {
            return 1;
     }
     
+    public static int getLastAssignmentId() {
+    	try (Connection conn = getConnection();
+                PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_LAST_ASSIGNMENT_ID)) {
+
+               try (ResultSet rs = stmt.executeQuery()) {
+                   if (rs.next()) {
+                       return rs.getInt(1);
+                   }
+               }
+           } catch (SQLException e) {
+               e.printStackTrace();
+           }
+
+           return 1;
+    }
+    
     public static String getCourseNumber(int i) {
     	try (Connection conn = getConnection();
                 PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_COURSE_NUMBER)) {

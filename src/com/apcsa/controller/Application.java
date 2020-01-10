@@ -14,7 +14,7 @@ public class Application {
 
     private Scanner in;
     private User activeUser;
-    private static int assignmentId = 1;
+    private static int assignmentId = initialAssignmentId();
     
     enum RootAction { PASSWORD, DATABASE, LOGOUT, SHUTDOWN, INVALID }
     enum AdministratorAction { FACULTY, DEPARTMENT, STUDENTS, GRADE, COURSE, PASSWORD, LOGOUT, INVALID }
@@ -474,13 +474,9 @@ public class Application {
 	private void addAssignment() {
 		int courseId = getCourseId();
 		int assignmentId = getAssignmentId();
-		
-		//sets defaults for selecting term of assignment
 		int markingPeriod = 0;
 		int isMidterm = 0;
 		int isFinal = 0;
-		
-		//menu for selecting term of assignment
 		System.out.println("\nChoose a marking period or exam status.\n");
 		System.out.println("[1] MP1 assignment.");
         System.out.println("[2] MP2 assignment.");
@@ -490,8 +486,6 @@ public class Application {
         System.out.println("[6] Final exam.");
         System.out.print("\n::: ");
         int selection = Utils.getInt(in, -1);
-        
-        //makes sure the menu selection is valid
         while(selection <= 0 || selection > 6) {
         	if(selection <= 0 || selection > 6) {
             	System.out.println("\nInvalid Selection.");
@@ -507,7 +501,6 @@ public class Application {
             selection = Utils.getInt(in, -1);                 
         }
         
-        //sets term values based on selection
         switch(selection){
         	case 1:
         		markingPeriod = 1;
@@ -529,12 +522,9 @@ public class Application {
         		break;
         }
         
-        //gets assignment name
         System.out.print("\nAssignment Title: ");
         String title = in.next(); 
         in.hasNextLine();
-        
-        //gets and validates point value of assignment
         int pointValue = 0;
         do {
         System.out.print("Point Value: ");
@@ -543,24 +533,21 @@ public class Application {
         	System.out.println("\nPoint values must be between 1 and 100.\n");
         }
         }while(pointValue < 1 || pointValue > 101);
-        
-        //confirms the creation of assignment
 		if(Utils.confirm(in, "\nAre you sure you want to create this assignment? (y/n)")){
-			if(PowerSchool.addAssignment(courseId, assignmentId, markingPeriod, isMidterm, isFinal, title, pointValue) == 1) {
-				System.out.println("\nSuccessfully created assignment.");
-			}else {
-				System.out.println("\nError creating assignment.");
-			}		
+			PowerSchool.addAssignment(courseId, assignmentId, markingPeriod, isMidterm, isFinal, title, pointValue);
 		}
+		System.out.println("\nSuccessfully created assignment.");
 	}
 
-//	Gets Course Id based on course Number
 	private int getCourseId() {
 		String courseNumber = getCourseSelectionTeacher();
 		return PowerSchool.getCourseId(courseNumber);
 	} 
 
-	//Does not work, have to create a function to look at database, if zero assignment Id is 1, last assignment id + 1s;
+	private static int initialAssignmentId() {
+		return PowerSchool.getLastAssignmentId();
+	}
+	
 	private int getAssignmentId() {		
 		return Application.assignmentId++;
 	}
@@ -575,7 +562,6 @@ public class Application {
     	
 	}
 	
-//    Prints menu to select course number from
 	 private String getCourseSelectionTeacher() {
 		 Teacher teacher = PowerSchool.getTeacher(activeUser);
 		 ArrayList<String> courses = PowerSchool.getCourses(teacher.getDepartmentId());
