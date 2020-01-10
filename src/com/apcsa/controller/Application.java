@@ -560,7 +560,7 @@ public class Application {
 		return PowerSchool.getCourseId(courseNumber);
 	} 
 
-	//Does not work, have to create a function to look at database, number of assignments + 1;
+	//Does not work, have to create a function to look at database, if zero assignment Id is 1, last assignment id + 1s;
 	private int getAssignmentId() {		
 		return Application.assignmentId++;
 	}
