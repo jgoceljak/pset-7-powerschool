@@ -178,6 +178,23 @@ public class PowerSchool {
            return "e";
     }
     
+    public static int getCourseId(String courseNumber) {
+    	try (Connection conn = getConnection();
+                PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_COURSE_Id)) {
+
+    			stmt.setString(1, courseNumber);
+               try (ResultSet rs = stmt.executeQuery()) {
+                   if (rs.next()) {
+                       return rs.getInt("course_Id");
+                   }
+               }
+           } catch (SQLException e) {
+               e.printStackTrace();
+           }
+
+           return 0;
+    }
+    
     /**
      * Returns the student account associated with the user.
      *
@@ -498,5 +515,4 @@ public class PowerSchool {
                return -1;
            }
     }
-	
 }

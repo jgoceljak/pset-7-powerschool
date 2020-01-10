@@ -60,9 +60,13 @@ public class QueryUtils {
         "SELECT * FROM students " +
             "WHERE user_id = ?";
     
-    public static final String GET_COURSE_NUMBER =
+    public static final String GET_COURSE_Id =
             "SELECT * FROM courses " +
                 "WHERE course_id = ?";
+    
+    public static final String GET_COURSE_NUMBER =
+            "SELECT * FROM courses " +
+                "WHERE course_no = ?";
     
     public static final String GET_NUMBER_OF_COURSES =
             "SELECT COUNT(*) FROM courses";
