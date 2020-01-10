@@ -522,7 +522,7 @@ public class Application {
         		break;
         }
         
-        System.out.print("Assignment Title: ");
+        System.out.print("\nAssignment Title: ");
         String title = in.next(); 
         in.hasNextLine();
         int pointValue = 0;
