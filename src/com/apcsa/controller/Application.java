@@ -13,6 +13,7 @@ public class Application {
 
     private Scanner in;
     private User activeUser;
+    private static int assignmentId = 1;
     
     enum RootAction { PASSWORD, DATABASE, LOGOUT, SHUTDOWN, INVALID }
     enum AdministratorAction { FACULTY, DEPARTMENT, STUDENTS, GRADE, COURSE, PASSWORD, LOGOUT, INVALID }
@@ -452,20 +453,6 @@ public class Application {
         }
     }
 	
-    private void enterGrade() {
-		
-	}
-
-	private void deleteAssignment() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	private void addAssignment() {
-		// TODO Auto-generated method stub
-		
-	}
-
 	private void viewEnrollmentByCourse() {
 		String courseNumber = getCourseSelectionTeacher();
 		ArrayList<Student> students = PowerSchool.getStudentsByCourse(courseNumber);
@@ -481,6 +468,50 @@ public class Application {
             } 
         }
 		
+	}
+	
+	private void addAssignment() {
+		String courseNumber = getCourseSelectionTeacher();
+		int assignmentId = getAssignmentId();
+		System.out.println("\nChoose a marking period or exam status.\n");
+		System.out.println("[1] MP1 assignment.");
+        System.out.println("[2] MP2 assignment.");
+        System.out.println("[3] MP3 assignment.");
+        System.out.println("[4] MP4 assignment.");
+        System.out.println("[5] Midterm exam.");
+        System.out.println("[6] Final exam.");
+        System.out.print("\n::: ");
+        int selection = Utils.getInt(in, -1);
+        while(selection <= 0 || selection > 6) {
+        	System.out.println("\nChoose a marking period or exam status.\n");
+    		System.out.println("[1] MP1 assignment.");
+            System.out.println("[2] MP2 assignment.");
+            System.out.println("[3] MP3 assignment.");
+            System.out.println("[4] MP4 assignment.");
+            System.out.println("[5] Midterm exam.");
+            System.out.println("[6] Final exam.");
+            System.out.print("\n::: ");
+            selection = Utils.getInt(in, -1);
+            if(selection < 1 || selection > 6) {
+            	System.out.println("\nInvalid Selection.\n");
+       	 	}
+        }
+//		PowerSchool.addAssignment(courseNumber, assignmentId, markingPeriod, isMidterm, isFinal, title, pointValue);
+		
+	}
+
+	private int getAssignmentId() {		
+		return Application.assignmentId++;
+	}
+
+	private void deleteAssignment() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+    private void enterGrade() {
+    	// TODO Auto-generated method stub
+    	
 	}
 	
 	 private String getCourseSelectionTeacher() {
