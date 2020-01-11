@@ -514,16 +514,17 @@ public class Application {
         		markingPeriod = 4;
         		break;
         	case 5:
+        		markingPeriod = 5;
         		isMidterm = 1;
         		break;
         	case 6:
+        		markingPeriod = 6;
         		isFinal = 1;
         		break;
         }
         
         System.out.print("\nAssignment Title: ");
-        String title = in.next(); 
-        in.hasNextLine();
+        String title = in.nextLine(); 
         int pointValue = 0;
         do {
         System.out.print("Point Value: ");
@@ -533,9 +534,12 @@ public class Application {
         }
         }while(pointValue < 1 || pointValue > 101);
 		if(Utils.confirm(in, "\nAre you sure you want to create this assignment? (y/n)")){
-			PowerSchool.addAssignment(courseId, assignmentId, markingPeriod, isMidterm, isFinal, title, pointValue);
-		}
-		System.out.println("\nSuccessfully created assignment.");
+			if(PowerSchool.addAssignment(courseId, assignmentId, markingPeriod, isMidterm, isFinal, title, pointValue) == 1) {
+				System.out.println("\nSuccessfully created assignment.");
+			}else {
+				System.out.println("\nError creating assignment.");
+			}	
+		}		
 	}
 
 	private int getCourseId() {
@@ -552,8 +556,59 @@ public class Application {
 	}
 
 	private void deleteAssignment() {
-		// TODO Auto-generated method stub
-		
+		int courseId = getCourseId();
+		System.out.println("\nChoose a marking period or exam status.\n");
+		System.out.println("[1] MP1 assignment.");
+        System.out.println("[2] MP2 assignment.");
+        System.out.println("[3] MP3 assignment.");
+        System.out.println("[4] MP4 assignment.");
+        System.out.println("[5] Midterm exam.");
+        System.out.println("[6] Final exam.");
+        System.out.print("\n::: ");
+        int markingPeriod = Utils.getInt(in, -1);
+        while(markingPeriod <= 0 || markingPeriod > 6) {
+        	if(markingPeriod <= 0 || markingPeriod > 6) {
+            	System.out.println("\nInvalid Selection.");
+       	 	}
+        	System.out.println("\nChoose a marking period or exam status.\n");
+    		System.out.println("[1] MP1 assignment.");
+            System.out.println("[2] MP2 assignment.");
+            System.out.println("[3] MP3 assignment.");
+            System.out.println("[4] MP4 assignment.");
+            System.out.println("[5] Midterm exam.");
+            System.out.println("[6] Final exam.");
+            System.out.print("\n::: ");
+            markingPeriod = Utils.getInt(in, -1);                 
+        }
+		 ArrayList<String> assignments = PowerSchool.getAssignments(courseId, markingPeriod);
+		 ArrayList<String> pointValues = PowerSchool.getPointValues(courseId, markingPeriod);
+		 
+		 System.out.println();
+		 if(!assignments.isEmpty()) {
+			 int assignmentSelection = -1;
+		        while(assignmentSelection <= 0 || assignmentSelection > assignments.size()) {
+		       	 int j = 1;
+		            for (String i: assignments) {
+		                System.out.println("["+ j++ + "] " + i + " (" + pointValues.get(j-2) + " pts)");
+		            }
+		       	 System.out.print("\n::: ");
+		       	assignmentSelection = Utils.getInt(in, -1);
+		       	 if(assignmentSelection <= 0 || assignmentSelection > assignments.size()) {
+		       		 System.out.println("\nInvalid Selection.\n");
+		       	 }
+		        }
+		        String title = assignments.get(assignmentSelection-1);
+		        if(Utils.confirm(in, "\nAre you sure you want to create this assignment? (y/n)")) {
+		        	if(PowerSchool.deleteAssignment(courseId, markingPeriod, title) == 1) {
+		        		System.out.println("\nSuccessfully deleted " + title + ".");
+		        	}else {
+		        		System.out.println("\nError deleting assignment.");
+		        	}
+		        }
+		 }else {
+			 System.out.println("No assignemtns.");
+		 }
+        
 	}
 	
     private void enterGrade() {

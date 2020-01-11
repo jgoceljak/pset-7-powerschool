@@ -545,4 +545,69 @@ public class PowerSchool {
 	        }
 		return 0;
 	}
+	
+	public static ArrayList<String> getAssignments(int courseId, int markingPeriod) {
+		ArrayList<String> assignments = new ArrayList<String>();
+		
+		try (Connection conn = getConnection();
+       		 PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_ASSIGNMENTS)) {
+			
+			conn.setAutoCommit(false);
+			stmt.setInt(1, courseId);
+            stmt.setInt(2, markingPeriod); 
+            
+            try (ResultSet rs = stmt.executeQuery()) {
+           	 while(rs.next()) {
+           		assignments.add(rs.getString("title"));                 
+           	 }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+		
+		return assignments;
+	}
+	
+	public static int deleteAssignment(int courseId, int markingPeriod, String title) {
+    	try (Connection conn = getConnection();
+           	 PreparedStatement stmt = conn.prepareStatement(QueryUtils.DELETE_ASSIGNMENT)) {
+               
+    		   conn.setAutoCommit(false);
+    		   stmt.setInt(1, courseId);
+               stmt.setInt(2, markingPeriod);
+               stmt.setString(3, title);
+               
+               if (stmt.executeUpdate() == 1) {
+                   conn.commit();
+                   return 1;
+               } else {
+                   conn.rollback();
+                   return -1;
+               }
+           } catch (SQLException e) {
+               return -1;
+           }
+    }
+
+	public static ArrayList<String> getPointValues(int courseId, int markingPeriod) {
+		ArrayList<String> pointValues = new ArrayList<String>();
+		
+		try (Connection conn = getConnection();
+       		 PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_POINT_VALUES)) {
+			
+			conn.setAutoCommit(false);
+			stmt.setInt(1, courseId);
+            stmt.setInt(2, markingPeriod); 
+            
+            try (ResultSet rs = stmt.executeQuery()) {
+           	 while(rs.next()) {
+           		pointValues.add(rs.getString("point_value"));                 
+           	 }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+		
+		return pointValues;
+	}
 }

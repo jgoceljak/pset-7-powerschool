@@ -131,4 +131,17 @@ public class QueryUtils {
 					"assignments "+
 				"ORDER BY assignment_id DESC";
 	
+	 public static final String DELETE_ASSIGNMENT = 
+	    		"DELETE FROM assignments " +
+	    				"WHERE course_id = ?" +
+	    				"AND marking_period = ?" +
+	    				"AND title = ?";
+
+	public static final String GET_ASSIGNMENTS =
+			"SELECT * FROM assignments " +
+			"WHERE course_id = ? AND marking_period = ?";
+	
+	public static final String GET_POINT_VALUES =
+			"SELECT * FROM assignments " +
+			"WHERE course_id = ? AND marking_period = ?";
 }
