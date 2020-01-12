@@ -611,7 +611,7 @@ public class Application {
 		        	}
 		        }
 		 }else {
-			 System.out.println("No assignemtns.");
+			 System.out.println("No assignments.");
 		 }
         
 	}
