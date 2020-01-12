@@ -681,8 +681,8 @@ public class Application {
 	    
 	    	ArrayList<String> availableStudents = PowerSchool.getStudentsByCourseWithoutObject(courseNo);
 	    	int selectedStudent = Utils.getInt(in, -1);
-	    	String selectedStudentId = availableStudents.get(selectedStudent);
-	    	int selectedStudentIdButItsActuallyAnInteger = Integer.parseInt(selectedStudentId) - 1;
+	    	String selectedStudentId = availableStudents.get(selectedStudent-1);
+	    	int selectedStudentIdButItsActuallyAnInteger = Integer.parseInt(selectedStudentId);
 	    	String title = assignments.get(assignmentSelection-1);
 	    	String points = pointValues.get(assignmentSelection-1);
 	    	String assignmentId = assignmentids.get(assignmentSelection-1);
