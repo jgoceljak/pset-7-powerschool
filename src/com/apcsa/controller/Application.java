@@ -720,19 +720,9 @@ public class Application {
 	    	}
 	    	
 	    	if(Utils.confirm(in, "Are you sure you want to enter this grade? (y/n)")){
-	    		PowerSchool.enterGrade(courseId, Integer.parseInt(assignmentId), newGrade, selectedStudentIdButItsActuallyAnInteger, Integer.parseInt(points), true);
-	    	}
-	    	
-	    	
-	    	
-
-	    	
-	        
+	    		PowerSchool.enterGrade(courseId, Integer.parseInt(assignmentId), selectedStudentIdButItsActuallyAnInteger, newGrade, Integer.parseInt(points), true);
+	    	}	        
 }
-    
-
-
-
 	
 	 private String getCourseSelectionTeacher() {
 		 Teacher teacher = PowerSchool.getTeacher(activeUser);
