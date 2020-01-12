@@ -70,7 +70,7 @@ public class Application {
                     String auth = activeUser.getPassword();
 					try (Connection conn = PowerSchool.getConnection()){
 						PowerSchool.updateAuth(conn, username, auth);
-	                    System.out.println("\nSuccessfully changed password.");
+	                    System.out.println("\nYour password has been changed to " + newPassword);
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -255,7 +255,7 @@ public class Application {
             String auth = activeUser.getPassword();
     		try (Connection conn = PowerSchool.getConnection()){
     			PowerSchool.updateAuth(conn, activeUser.getUsername(), auth);
-                System.out.println("\nSuccessfully changed password.");
+                System.out.println("\nYour password has been changed to " + newPassword);
     		} catch (SQLException e) {
     			e.printStackTrace();
     		}
@@ -602,12 +602,9 @@ public class Application {
 		       		 System.out.println("\nInvalid Selection.\n");
 		       	 }
 		        }
-		       
 		        String title = assignments.get(assignmentSelection-1);
-		        int assignemntId= PowerSchool.getAssignmentId(courseId, markingPeriod, title);
-		        if(Utils.confirm(in, "\nAre you sure you want to delete this assignment? (y/n)")) {
+		        if(Utils.confirm(in, "\nAre you sure you want to create this assignment? (y/n)")) {
 		        	if(PowerSchool.deleteAssignment(courseId, markingPeriod, title) == 1) {
-		        		PowerSchool.deleteAssignmentGrades(assignemntId);
 		        		System.out.println("\nSuccessfully deleted " + title + ".");
 		        	}else {
 		        		System.out.println("\nError deleting assignment.");
@@ -620,7 +617,6 @@ public class Application {
 	}
 	
     private void enterGrade() {
-    	boolean graded = false;
         int courseId = getCourseId();
         String courseNo = PowerSchool.getCourseNumber(courseId);
         System.out.println("\nChoose a marking period or exam status.\n");
@@ -710,7 +706,6 @@ public class Application {
 			    	if (grades.isEmpty()) {
 			    		System.out.println("Current Grade: --"); 
 			    	} else {
-			    		graded = true;
 			    		String assignmentGrade = grades.get(0);
 			    		System.out.println("Current Grade: " + assignmentGrade + "/" + points);
 			    		grades.clear();
@@ -726,33 +721,129 @@ public class Application {
 			    		}
 			    	}
 			    	
-			    	if(Utils.confirm(in, "\nAre you sure you want to enter this grade? (y/n)")){
-			    		if(graded) {
-				    		if(PowerSchool.deleteAssignmentGrade(Integer.parseInt(assignmentId), selectedStudentIdButItsActuallyAnInteger) == 1 && PowerSchool.enterGrade(courseId, Integer.parseInt(assignmentId), selectedStudentIdButItsActuallyAnInteger, newGrade, Integer.parseInt(points), true) == 1) {
-				    			System.out.println("\nSuccessfully entered grade.");
-				    		}else {
-				    			System.out.println("\nError entering grade.");
-				    		}
+			    	if(Utils.confirm(in, "Are you sure you want to enter this grade? (y/n)")){
+			    		PowerSchool.deleteAssignmentGrade(Integer.parseInt(assignmentId), selectedStudentIdButItsActuallyAnInteger);
+			    		if(PowerSchool.enterGrade(courseId, Integer.parseInt(assignmentId), selectedStudentIdButItsActuallyAnInteger, newGrade, Integer.parseInt(points), true) == 1) {
+			    			System.out.println("Successfully entered grade.");
+			      
+			                   ArrayList<Integer> assignmentIds = PowerSchool.getAssignmentIdByMP(markingPeriod);
+			                   ArrayList<Double> grades1 = new ArrayList<Double>();
+
+			                    for (int i = 0; i < assignmentIds.size(); i++) {
+			                        grades1.addAll(PowerSchool.getGrades(courseId, assignmentIds.get(i),selectedStudentIdButItsActuallyAnInteger));
+			                    }
+			                    ArrayList<Double> percent = new ArrayList<Double>();
+			                    for (int i = 0; i < grades1.size(); i+=2) {
+			                        percent.add((grades1.get(i)/grades1.get(i+1))*100);
+			                    }
+			                    double total = 0;
+			                    for (int i = 0; i < percent.size(); i++) {
+			                        total += percent.get(i);
+			                    }
+			                    double average = total/percent.size();
+			                    switch (markingPeriod) {
+			                    case 1: PowerSchool.updateCourseGradesMP1(courseId, selectedStudentIdButItsActuallyAnInteger, average); break;
+			                    case 2: PowerSchool.updateCourseGradesMP2(courseId, selectedStudentIdButItsActuallyAnInteger, average); break;
+			                    case 3: PowerSchool.updateCourseGradesMP3(courseId, selectedStudentIdButItsActuallyAnInteger, average); break;
+			                    case 4: PowerSchool.updateCourseGradesMP4(courseId, selectedStudentIdButItsActuallyAnInteger, average); break;
+			                    case 5: PowerSchool.updateCourseGradesMidterm(courseId, selectedStudentIdButItsActuallyAnInteger, average); break;
+			                    case 6: PowerSchool.updateCourseGradesFinal(courseId, selectedStudentIdButItsActuallyAnInteger, average); break;
+			                    default: System.out.println("\nInvalid selection.\n"); break;
+			                    }
+			                }
+			                ArrayList<Double> grades1 = new ArrayList<Double>();
+			                if (PowerSchool.getMP1Grade(courseId, selectedStudentIdButItsActuallyAnInteger) == null){
+			                    grades1.add(-1.0);
+			                } else {
+			                    grades1.add((Double) PowerSchool.getMP1Grade(courseId, selectedStudentIdButItsActuallyAnInteger));
+			                }
+			                if (PowerSchool.getMP2Grade(courseId, selectedStudentIdButItsActuallyAnInteger) == null){
+			                    grades1.add(-1.0);
+			                } else {
+			                    grades1.add((Double) PowerSchool.getMP2Grade(courseId, selectedStudentIdButItsActuallyAnInteger));
+			                }
+			                if (PowerSchool.getMP3Grade(courseId, selectedStudentIdButItsActuallyAnInteger) == null){
+			                    grades1.add(-1.0);
+			                } else {
+			                    grades1.add((Double) PowerSchool.getMP3Grade(courseId, selectedStudentIdButItsActuallyAnInteger));
+			                }
+			                if (PowerSchool.getMP4Grade(courseId, selectedStudentIdButItsActuallyAnInteger) == null){
+			                    grades1.add(-1.0);
+			                } else {
+			                    grades1.add((Double) PowerSchool.getMP4Grade(courseId, selectedStudentIdButItsActuallyAnInteger));
+			                }
+			                if (PowerSchool.getMidtermGrade(courseId, selectedStudentIdButItsActuallyAnInteger) == null){
+			                    grades1.add(-1.0);
+			                } else {
+			                    grades1.add((Double) PowerSchool.getMidtermGrade(courseId, selectedStudentIdButItsActuallyAnInteger));
+			                }
+			                
+			                if (PowerSchool.getFinalGrade(courseId, selectedStudentIdButItsActuallyAnInteger) == null){
+			                    grades1.add(-1.0);
+			                } else {
+			                    grades1.add((Double) PowerSchool.getFinalGrade(courseId, selectedStudentIdButItsActuallyAnInteger));
+			                }
+
+			                double grade = Utils.getGrade(grades1);
+			                PowerSchool.updateCourseGrade(courseId, selectedStudentIdButItsActuallyAnInteger, grade);
+			                PowerSchool.getCourseGrades(selectedStudentIdButItsActuallyAnInteger);
+
+			                ArrayList<Object> courseGrades = PowerSchool.getCourseGrades(selectedStudentIdButItsActuallyAnInteger);
+			                ArrayList<Double> fourScale = new ArrayList<Double>();
+			                for (int i = 0; i < courseGrades.size(); i++) {
+			                    if ((Double) courseGrades.get(i) == -1.0) {
+
+			                    } else if ((Double) courseGrades.get(i) >= 93 && (Double) courseGrades.get(i) <= 100) {
+			                        fourScale.add(4.0);
+			                    } else if ((Double) courseGrades.get(i) >= 90 && (Double) courseGrades.get(i) <= 92) {
+			                        fourScale.add(3.7);
+			                    } else if ((Double) courseGrades.get(i) >= 87 && (Double) courseGrades.get(i) <= 89) {
+			                        fourScale.add(3.3);
+			                    } else if ((Double) courseGrades.get(i) >= 83 && (Double) courseGrades.get(i) <= 86) {
+			                        fourScale.add(3.0);
+			                    } else if ((Double) courseGrades.get(i) >= 80 && (Double) courseGrades.get(i) <= 82) {
+			                        fourScale.add(2.7);
+			                    } else if ((Double) courseGrades.get(i) >= 77 && (Double) courseGrades.get(i) <= 79) {
+			                        fourScale.add(2.3);
+			                    } else if ((Double) courseGrades.get(i) >= 73 && (Double) courseGrades.get(i) <= 76) {
+			                        fourScale.add(2.0);
+			                    } else if ((Double) courseGrades.get(i) >= 70 && (Double) courseGrades.get(i) <= 72) {
+			                        fourScale.add(1.7);
+			                    } else if ((Double) courseGrades.get(i) >= 67 && (Double) courseGrades.get(i) <= 69) {
+			                        fourScale.add(1.3);
+			                    } else if ((Double) courseGrades.get(i) >= 65 && (Double) courseGrades.get(i) <= 66) {
+			                        fourScale.add(1.0);
+			                    } else if ((Double) courseGrades.get(i) > 65) {
+			                        fourScale.add(0.0);
+			                    }
+			                }
+			                ArrayList<Integer> courseIds = PowerSchool.getCourseIds(selectedStudentIdButItsActuallyAnInteger);
+			                ArrayList<Integer> creditHours = PowerSchool.getCreditHours(courseIds);
+			                int totalGradePoints = 0;
+			                int hours = 0;
+			                for (int i = 0; i < fourScale.size(); i++) {
+			                    totalGradePoints += fourScale.get(i)*creditHours.get(i);
+			                    hours += creditHours.get(i);
+			                }
+			                double gpa = (double) (totalGradePoints)/ (double) hours;
+			                double roundedGpa = Math.round(gpa * 100.0) / 100.0;
+			                PowerSchool.updateGPA(roundedGpa, selectedStudentIdButItsActuallyAnInteger);
+			           
+			    			
 			    		}else {
-			    			if(PowerSchool.enterGrade(courseId, Integer.parseInt(assignmentId), selectedStudentIdButItsActuallyAnInteger, newGrade, Integer.parseInt(points), true) == 1) {
-				    			System.out.println("\nSuccessfully entered grade.");
-				    		}else {
-				    			System.out.println("\nError entering grade.");
-				    		}
+			    			System.out.println("Error entering grade.");
 			    		}
-			    		
-			    	}	        
-		        }
-		    
-		    	
-		}else {
+			    	}
+		    	}
+			    		        
+		        
+			    	else {
 			System.out.println("No assignments.");
 		}
+		        }
 		 
 		
 		
-			
-}
 	
 	 private String getCourseSelectionTeacher() {
 		 Teacher teacher = PowerSchool.getTeacher(activeUser);
@@ -777,8 +868,8 @@ public class Application {
 	private void showStudentUI() {
 	        while (activeUser != null) {
 	            switch (getStudentMenuSelection()) {
-	                case GRADES: viewCourseGrades(); break;
-	                case COURSE: viewAssignmentGradesByCourses(); break;
+	                case GRADES: ((Student) activeUser).viewCourseGrades(); break;
+	                case COURSE: ((Student) activeUser).viewAssignmentGradesByCourse(in); break;
 	                case PASSWORD: changePassword(); break;
 	                case LOGOUT: logout(); break;
 	                default: System.out.println("\nInvalid selection."); break;
