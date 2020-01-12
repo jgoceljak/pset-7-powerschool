@@ -676,14 +676,15 @@ public class PowerSchool {
 		return assignmentsIds;
 	}
 	
-	public static ArrayList<String> getAssignmentGrade(String assignmentId) {
+	public static ArrayList<String> getAssignmentGrade(String assignmentId, int studentId) {
 		ArrayList<String> assignmentsIds = new ArrayList<String>();
 		
 		try (Connection conn = getConnection();
        		 PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_ASSIGNMENTS_GRADE)) {
 			
 			conn.setAutoCommit(false);
-			stmt.setString(1, assignmentId);	
+			stmt.setString(1, assignmentId);
+			stmt.setInt(2, studentId);
             try (ResultSet rs = stmt.executeQuery()) {
            	 while(rs.next()) {
            		assignmentsIds.add(rs.getString("points_earned"));                 

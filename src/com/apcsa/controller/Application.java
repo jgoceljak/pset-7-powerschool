@@ -698,7 +698,7 @@ public class Application {
 	    	System.out.println("Student: " + studentLastName + ", " + studentFirstName);
 	    	
 	    	
-	    	ArrayList<String> grades = PowerSchool.getAssignmentGrade(assignmentId);
+	    	ArrayList<String> grades = PowerSchool.getAssignmentGrade(assignmentId, selectedStudentIdButItsActuallyAnInteger);
 	    	
 	    	
 	    	if (grades.isEmpty()) {
@@ -706,6 +706,7 @@ public class Application {
 	    	} else {
 	    		String assignmentGrade = grades.get(0);
 	    		System.out.println("Current Grade: " + assignmentGrade + "/" + points);
+	    		grades.clear();
 	    		PowerSchool.deleteAssignmentGrade(Integer.parseInt(assignmentId), selectedStudentIdButItsActuallyAnInteger);
 	    	} 
 	    	

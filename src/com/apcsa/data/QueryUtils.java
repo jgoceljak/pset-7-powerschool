@@ -158,7 +158,7 @@ public class QueryUtils {
 	
 	public static final String GET_ASSIGNMENTS_GRADE =
 			"SELECT * FROM assignment_grades " +
-			"WHERE assignment_id = ?";
+			"WHERE assignment_id = ? AND student_id = ?";
 	
 	public static final String GET_POINT_VALUES =
 			"SELECT * FROM assignments " +
