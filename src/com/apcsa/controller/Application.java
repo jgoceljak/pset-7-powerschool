@@ -199,7 +199,7 @@ public class Application {
     }
     
     private void viewStudentsByGrade() {
-    	ArrayList<Student> students = PowerSchool.getStudentsByGrade(getGradeSelection());
+    	ArrayList<Student> students = Utils.updateRanks(PowerSchool.getStudentsByGrade(getGradeSelection()));
     	
     	if (students.isEmpty()) {
             System.out.println("\nNo students to display.");
@@ -208,7 +208,7 @@ public class Application {
             
             int i = 1;
             for (Student student : students) {
-                System.out.println(i++ + ". " + student.getName() + " / " + student.getClassRank());
+                System.out.println(i++ + ". " + student.getName() + " / " + "#" + student.getClassRank());
             } 
         }
     }

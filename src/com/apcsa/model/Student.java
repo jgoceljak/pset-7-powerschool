@@ -164,10 +164,10 @@ public class Student extends User {
 		return firstName;
 	}
 
-	public void setClassRank(int i) {
-		// TODO Auto-generated method stub
-		
+	public void setClassRank(int classRank) {
+		this.classRank = classRank;
 	}
+	
 	public double getStudentId() {
         return studentId;
     }
