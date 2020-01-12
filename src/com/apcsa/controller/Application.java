@@ -536,7 +536,7 @@ public class Application {
         	System.out.println("\nPoint values must be between 1 and 100.\n");
         }
         }while(pointValue < 1 || pointValue > 101);
-		if(Utils.confirm(in, "\nAre you sure you want to create this assignment? (y/n)")){
+		if(Utils.confirm(in, "\nAre you sure you want to create this assignment? (y/n) ")){
 			if(PowerSchool.addAssignment(courseId, assignmentId, markingPeriod, isMidterm, isFinal, title, pointValue) == 1) {
 				System.out.println("\nSuccessfully created assignment.");
 			}else {
@@ -603,8 +603,9 @@ public class Application {
 		       	 }
 		        }
 		        String title = assignments.get(assignmentSelection-1);
-		        if(Utils.confirm(in, "\nAre you sure you want to create this assignment? (y/n)")) {
-		        	if(PowerSchool.deleteAssignment(courseId, markingPeriod, title) == 1) {
+		        int assignemntId = PowerSchool.getAssignmentId(courseId, markingPeriod, title);
+		        if(Utils.confirm(in, "\nAre you sure you want to create this assignment? (y/n) ")) {
+		        	if(PowerSchool.deleteAssignment(courseId, markingPeriod, title) == 1 && PowerSchool.deleteAssignmentGrades(assignemntId, courseId) ==1 ) {
 		        		System.out.println("\nSuccessfully deleted " + title + ".");
 		        	}else {
 		        		System.out.println("\nError deleting assignment.");
@@ -681,7 +682,7 @@ public class Application {
 				    		System.out.println("\nInvalid Selection.\n");
 				    	}
 		            }while(selectedStudent < 1 || selectedStudent > students.size());
-	            
+		            System.out.println();
 			    	ArrayList<String> availableStudents = PowerSchool.getStudentsByCourseWithoutObject(courseNo);
 			    	String selectedStudentId = availableStudents.get(selectedStudent-1);
 			    	int selectedStudentIdButItsActuallyAnInteger = Integer.parseInt(selectedStudentId);
@@ -700,8 +701,7 @@ public class Application {
 			    	System.out.println("Student: " + studentLastName + ", " + studentFirstName);
 			    	
 			    	
-			    	ArrayList<String> grades = PowerSchool.getAssignmentGrade(assignmentId, selectedStudentIdButItsActuallyAnInteger);
-			    	
+			    	ArrayList<String> grades = PowerSchool.getAssignmentGrade(assignmentId, selectedStudentIdButItsActuallyAnInteger);			    	
 			    	
 			    	if (grades.isEmpty()) {
 			    		System.out.println("Current Grade: --"); 
@@ -711,20 +711,20 @@ public class Application {
 			    		grades.clear();
 			    	} 
 			    	
-			    	System.out.print("\nNew Grade:");
+			    	System.out.print("\nNew Grade: ");
 			    	
 			    	int newGrade = Utils.getInt(in, -1);
 			    	if (newGrade > Integer.parseInt(points) || newGrade < 0) {
 			    		while(newGrade > Integer.parseInt(points) || newGrade < 0) {
-			    			System.out.print("Please enter a valid grade:");
+			    			System.out.print("Please enter a valid grade: ");
 			    			newGrade = Utils.getInt(in, -1);
 			    		}
 			    	}
 			    	
-			    	if(Utils.confirm(in, "Are you sure you want to enter this grade? (y/n)")){
+			    	if(Utils.confirm(in, "\nAre you sure you want to enter this grade? (y/n) ")){
 			    		PowerSchool.deleteAssignmentGrade(Integer.parseInt(assignmentId), selectedStudentIdButItsActuallyAnInteger);
 			    		if(PowerSchool.enterGrade(courseId, Integer.parseInt(assignmentId), selectedStudentIdButItsActuallyAnInteger, newGrade, Integer.parseInt(points), true) == 1) {
-			    			System.out.println("Successfully entered grade.");
+			    			System.out.println("\nSuccessfully entered grade.");
 			      
 			                   ArrayList<Integer> assignmentIds = PowerSchool.getAssignmentIdByMP(markingPeriod);
 			                   ArrayList<Double> grades1 = new ArrayList<Double>();
@@ -916,7 +916,7 @@ public class Application {
      */
     
     private void factoryReset() {
-    	if(Utils.confirm(in, "\nAre you sure you want to reset all settings and data? (y/n)")){
+    	if(Utils.confirm(in, "\nAre you sure you want to reset all settings and data? (y/n) ")){
     		 try {
     	            PowerSchool.initialize(true);
     	            System.out.println("\nSuccessfully reset database.");
@@ -937,7 +937,7 @@ public class Application {
      */
 
     private void logout() {
-    	if(Utils.confirm(in, "\nAre you sure you want to logout? (y/n)")) {
+    	if(Utils.confirm(in, "\nAre you sure you want to logout? (y/n) ")) {
     		activeUser = null;
     	}
     }

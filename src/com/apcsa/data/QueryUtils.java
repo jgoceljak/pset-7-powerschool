@@ -164,6 +164,11 @@ public class QueryUtils {
 	    				"WHERE assignment_id = ?" +
 	    				"AND student_id = ?";
 	 
+	 public static final String DELETE_ASSIGNMENT_GRADES = 
+	    		"DELETE FROM assignment_grades " +
+	    				"WHERE assignment_id = ? " +
+	    				"AND course_id = ?";
+	 
 	public static final String GET_ASSIGNMENTS =
 			"SELECT * FROM assignments " +
 			"WHERE course_id = ? AND marking_period = ?";
@@ -280,5 +285,9 @@ public class QueryUtils {
 	            "UPDATE students " +
 	            "SET gpa = ?" +
 	            "WHERE student_id = ?";
+	    
+		 public static final String GET_ASSIGNMENT_ID = 
+				 "SELECT * FROM assignments " +
+							"WHERE course_id = ? AND marking_period = ? AND title = ?";
 
 }
