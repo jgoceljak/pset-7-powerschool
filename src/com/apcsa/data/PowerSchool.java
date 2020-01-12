@@ -641,13 +641,9 @@ public class PowerSchool {
                stmt.setInt(1, assignmentId);
                stmt.setInt(2, courseId);
 
-               if (stmt.executeUpdate() == 1) {
-                   conn.commit();
-                   return 1;
-               } else {
-                   conn.rollback();
-                   return -1;
-               }
+               stmt.executeUpdate();
+               conn.commit();
+               return 1;
            } catch (SQLException e) {
         	   
                return -1;
