@@ -70,7 +70,7 @@ public class Application {
                     String auth = activeUser.getPassword();
 					try (Connection conn = PowerSchool.getConnection()){
 						PowerSchool.updateAuth(conn, username, auth);
-	                    System.out.println("\nYour password has been changed to " + newPassword);
+	                    System.out.println("\nSuccessfully changed password.");
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -255,7 +255,7 @@ public class Application {
             String auth = activeUser.getPassword();
     		try (Connection conn = PowerSchool.getConnection()){
     			PowerSchool.updateAuth(conn, activeUser.getUsername(), auth);
-                System.out.println("\nYour password has been changed to " + newPassword);
+                System.out.println("\nSuccessfully changed password.");
     		} catch (SQLException e) {
     			e.printStackTrace();
     		}
@@ -603,7 +603,8 @@ public class Application {
 		       	 }
 		        }
 		        String title = assignments.get(assignmentSelection-1);
-		        if(Utils.confirm(in, "\nAre you sure you want to create this assignment? (y/n)")) {
+		        if(Utils.confirm(in, "\nAre you sure you want to delete this assignment? (y/n)")) {
+		        	System.out.println(PowerSchool.getAssignmentId(courseId, markingPeriod, title));
 		        	if(PowerSchool.deleteAssignment(courseId, markingPeriod, title) == 1) {
 		        		System.out.println("\nSuccessfully deleted " + title + ".");
 		        	}else {
@@ -722,10 +723,11 @@ public class Application {
 			    	}
 			    	
 			    	if(Utils.confirm(in, "\nAre you sure you want to enter this grade? (y/n)")){
-			    		if(PowerSchool.deleteAssignmentGrade(Integer.parseInt(assignmentId), selectedStudentIdButItsActuallyAnInteger) == 1 && PowerSchool.enterGrade(courseId, Integer.parseInt(assignmentId), selectedStudentIdButItsActuallyAnInteger, newGrade, Integer.parseInt(points), true) == 1) {
+			    		PowerSchool.deleteAssignmentGrade(Integer.parseInt(assignmentId), selectedStudentIdButItsActuallyAnInteger);
+			    		if(PowerSchool.enterGrade(courseId, Integer.parseInt(assignmentId), selectedStudentIdButItsActuallyAnInteger, newGrade, Integer.parseInt(points), true) == 1) {
 			    			System.out.println("\nSuccessfully entered grade.");
 			    		}else {
-			    			System.out.println("Error entering grade.");
+			    			System.out.println("\nError entering grade.");
 			    		}
 			    	}	        
 		        }

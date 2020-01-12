@@ -169,4 +169,12 @@ public class QueryUtils {
 					"WHERE student_id = ?" + 
 			"ORDER BY " +
 				"last_name, first_name";
+	
+	 public static final String DELETE_ASSIGNMENT_GRADES = 
+			 "DELETE FROM assignments " +
+	    		"WHERE assignment_id = ?";
+	 
+	 public static final String GET_ASSIGNMENT_ID = 
+			 "SELECT * FROM assignments " +
+						"WHERE course_id = ? AND marking_period = ? AND title = ?";
 }

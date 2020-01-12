@@ -632,6 +632,7 @@ public class PowerSchool {
                return -1;
            }
     }
+	
 	public static ArrayList<String> getAssignments(int courseId, int markingPeriod) {
 		ArrayList<String> assignments = new ArrayList<String>();
 		
@@ -757,5 +758,44 @@ public class PowerSchool {
         }
 		
 		return pointValues;
+	}
+
+	public static int deleteAssignmentGrades(int assignmentId) {
+		try (Connection conn = getConnection();
+	           	 PreparedStatement stmt = conn.prepareStatement(QueryUtils.DELETE_ASSIGNMENT_GRADES)) {
+
+				   conn.setAutoCommit(false);
+	    		   stmt.setInt(1, assignmentId);
+	               
+	               if (stmt.executeUpdate() == 1) {
+	                   conn.commit();
+	                   return 1;
+	               } else {
+	                   conn.rollback();
+	                   return -1;
+	               }
+	           } catch (SQLException e) {
+	               return -1;
+	           }
+	}
+
+	public static int getAssignmentId(int courseId, int markingPeriod, String title) {
+		try (Connection conn = getConnection();
+	       		 PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_ASSIGNMENT_ID)) {
+				
+				conn.setAutoCommit(false);
+				stmt.setInt(1, courseId);
+	            stmt.setInt(2, markingPeriod); 
+	            stmt.setString(3, title); 
+	            
+	            try (ResultSet rs = stmt.executeQuery()) {
+
+	           		return rs.getInt("assignment_id");                 
+	            }
+	        } catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+			
+			return 0;
 	}
 }
