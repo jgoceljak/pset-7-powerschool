@@ -129,6 +129,10 @@ public class QueryUtils {
     		"INSERT INTO assignments " +
     		"VALUES(?, ?, ?, ?, ?, ?, ?)";
 	
+	public static final String ENTER_GRADE = 
+    		"INSERT INTO assignment_grades " +
+    		"VALUES(?, ?, ?, ?, ?, ?)";
+	
 	public static final String GET_NUMBER_OF_ASSIGNMENTS = 
 			"SELECT COUNT(*) FROM assignments";
 	
@@ -143,9 +147,18 @@ public class QueryUtils {
 	    				"AND marking_period = ?" +
 	    				"AND title = ?";
 
+	 public static final String DELETE_ASSIGNMENT_GRADE = 
+	    		"DELETE FROM assignment_grades " +
+	    				"WHERE assignment_id = ?" +
+	    				"AND student_id = ?";
+	 
 	public static final String GET_ASSIGNMENTS =
 			"SELECT * FROM assignments " +
 			"WHERE course_id = ? AND marking_period = ?";
+	
+	public static final String GET_ASSIGNMENTS_GRADE =
+			"SELECT * FROM assignment_grades " +
+			"WHERE assignment_id = ?";
 	
 	public static final String GET_POINT_VALUES =
 			"SELECT * FROM assignments " +

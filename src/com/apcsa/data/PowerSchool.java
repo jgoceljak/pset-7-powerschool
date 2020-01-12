@@ -461,6 +461,8 @@ public class PowerSchool {
          return students;
      }
      
+     
+     
      /**
       * Resets a user's password.
       * 
@@ -569,6 +571,8 @@ public class PowerSchool {
                return -1;
            }
     }
+	
+	
 
 	public static int getlastAssignmentId() {
 		try (Connection conn = getConnection();
@@ -584,6 +588,50 @@ public class PowerSchool {
 		return 0;
 	}
 	
+	public static int enterGrade(int courseId, int assignmentId, int studentId, int pointsEarned, int pointsPossible, boolean isGraded) {
+    	try (Connection conn = getConnection();
+           	 PreparedStatement stmt = conn.prepareStatement(QueryUtils.ENTER_GRADE)) {
+               
+    		   conn.setAutoCommit(false);
+               stmt.setInt(1, courseId);
+               stmt.setInt(2, assignmentId);
+               stmt.setInt(3, studentId);
+               stmt.setInt(4, pointsEarned);
+               stmt.setInt(5, pointsPossible);
+               stmt.setBoolean(6, isGraded);
+
+
+               if (stmt.executeUpdate() == 1) {
+                   conn.commit();
+                   return 1;
+               } else {
+                   conn.rollback();
+                   return -1;
+               }
+           } catch (SQLException e) {
+               return -1;
+           }
+    }
+	
+	public static int deleteAssignmentGrade(int assignmentId, int studentId) {
+    	try (Connection conn = getConnection();
+           	 PreparedStatement stmt = conn.prepareStatement(QueryUtils.DELETE_ASSIGNMENT_GRADE)) {
+               
+    		   conn.setAutoCommit(false);
+               stmt.setInt(1, assignmentId);
+               stmt.setInt(2, studentId);
+
+               if (stmt.executeUpdate() == 1) {
+                   conn.commit();
+                   return 1;
+               } else {
+                   conn.rollback();
+                   return -1;
+               }
+           } catch (SQLException e) {
+               return -1;
+           }
+    }
 	public static ArrayList<String> getAssignments(int courseId, int markingPeriod) {
 		ArrayList<String> assignments = new ArrayList<String>();
 		
@@ -606,6 +654,48 @@ public class PowerSchool {
 		return assignments;
 	}
 	
+	public static ArrayList<String> getAssignmentIds(int courseId, int markingPeriod) {
+		ArrayList<String> assignmentsIds = new ArrayList<String>();
+		
+		try (Connection conn = getConnection();
+       		 PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_ASSIGNMENTS)) {
+			
+			conn.setAutoCommit(false);
+			stmt.setInt(1, courseId);
+            stmt.setInt(2, markingPeriod); 
+            
+            try (ResultSet rs = stmt.executeQuery()) {
+           	 while(rs.next()) {
+           		assignmentsIds.add(rs.getString("assignment_id"));                 
+           	 }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+		
+		return assignmentsIds;
+	}
+	
+	public static ArrayList<String> getAssignmentGrade(String assignmentId) {
+		ArrayList<String> assignmentsIds = new ArrayList<String>();
+		
+		try (Connection conn = getConnection();
+       		 PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_ASSIGNMENTS_GRADE)) {
+			
+			conn.setAutoCommit(false);
+			stmt.setString(1, assignmentId);	
+            try (ResultSet rs = stmt.executeQuery()) {
+           	 while(rs.next()) {
+           		assignmentsIds.add(rs.getString("points_earned"));                 
+           	 }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+		
+		return assignmentsIds;
+	}
+	
 	public static int deleteAssignment(int courseId, int markingPeriod, String title) {
     	try (Connection conn = getConnection();
            	 PreparedStatement stmt = conn.prepareStatement(QueryUtils.DELETE_ASSIGNMENT)) {
@@ -626,6 +716,25 @@ public class PowerSchool {
                return -1;
            }
     }
+	
+	public static ArrayList<String> getGradesByAssignmentId(int assignmentId) {
+		ArrayList<String> grades = new ArrayList<String>();
+		
+		try (Connection conn = getConnection();
+       		 PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_COURSES)) {
+       	 stmt.setString(1, String.valueOf(assignmentId));        
+            try (ResultSet rs = stmt.executeQuery()) {
+           	 while(rs.next()) {
+                    grades.add(rs.getString("course_no"));  
+                    
+           	 }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+		
+		return grades;
+	}
 
 	public static ArrayList<String> getPointValues(int courseId, int markingPeriod) {
 		ArrayList<String> pointValues = new ArrayList<String>();

@@ -618,6 +618,7 @@ public class Application {
 	
     private void enterGrade() {
         int courseId = getCourseId();
+        System.out.println(courseId);
         String courseNo = PowerSchool.getCourseNumber(courseId);
         System.out.println(courseId);
         System.out.println("\nChoose a marking period or exam status.\n");
@@ -646,6 +647,7 @@ public class Application {
         
         ArrayList<String> assignments = PowerSchool.getAssignments(courseId, markingPeriod);
 		ArrayList<String> pointValues = PowerSchool.getPointValues(courseId, markingPeriod);
+		ArrayList<String> assignmentids = PowerSchool.getAssignmentIds(courseId, markingPeriod);
 		 
 		int assignmentSelection = -1;
 		 if(!assignments.isEmpty()) {
@@ -681,9 +683,9 @@ public class Application {
 	    	int selectedStudent = Utils.getInt(in, -1);
 	    	String selectedStudentId = availableStudents.get(selectedStudent);
 	    	int selectedStudentIdButItsActuallyAnInteger = Integer.parseInt(selectedStudentId) - 1;
-	    	System.out.println(assignmentSelection);
 	    	String title = assignments.get(assignmentSelection-1);
 	    	String points = pointValues.get(assignmentSelection-1);
+	    	String assignmentId = assignmentids.get(assignmentSelection-1);
     	
 	    	String assignmentDescription = "Assignment: " + title + " (" + points + " pts)";
 	    	
@@ -696,7 +698,36 @@ public class Application {
 	    	System.out.println("Student: " + studentLastName + ", " + studentFirstName);
 	    	
 	    	
-	    
+	    	ArrayList<String> grades = PowerSchool.getAssignmentGrade(assignmentId);
+	    	
+	    	
+	    	if (grades.isEmpty()) {
+	    		System.out.println("Current Grade: --"); 
+	    	} else {
+	    		String assignmentGrade = grades.get(0);
+	    		System.out.println("Current Grade: " + assignmentGrade + "/" + points);
+	    		PowerSchool.deleteAssignmentGrade(Integer.parseInt(assignmentId), selectedStudentIdButItsActuallyAnInteger);
+	    	} 
+	    	
+	    	System.out.println("New Grade:");
+	    	
+	    	int newGrade = Utils.getInt(in, -1);
+	    	if (newGrade > Integer.parseInt(points) || newGrade < 0) {
+	    		while(newGrade > Integer.parseInt(points) || newGrade < 0) {
+	    			System.out.println("Please enter a valid grade:");
+	    			newGrade = Utils.getInt(in, -1);
+	    		}
+	    	}
+	    	
+	    	if(Utils.confirm(in, "Are you sure you want to enter this grade? (y/n)")){
+	    		PowerSchool.enterGrade(courseId, Integer.parseInt(assignmentId), newGrade, selectedStudentIdButItsActuallyAnInteger, Integer.parseInt(points), true);
+	    	}
+	    	
+	    	
+	    	
+
+	    	
+	        
 }
     
 
@@ -763,8 +794,8 @@ public class Application {
 			
 		}
 
-			private void viewAssignmentGradesByCourses() {
-			// TODO Auto-generated method stub
+		private void viewAssignmentGradesByCourses() {
+		// TODO Auto-generated method stub
 			
 		}
 		
