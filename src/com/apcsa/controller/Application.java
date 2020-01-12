@@ -709,7 +709,6 @@ public class Application {
 			    		String assignmentGrade = grades.get(0);
 			    		System.out.println("Current Grade: " + assignmentGrade + "/" + points);
 			    		grades.clear();
-			    		PowerSchool.deleteAssignmentGrade(Integer.parseInt(assignmentId), selectedStudentIdButItsActuallyAnInteger);
 			    	} 
 			    	
 			    	System.out.print("\nNew Grade:");
@@ -723,6 +722,7 @@ public class Application {
 			    	}
 			    	
 			    	if(Utils.confirm(in, "Are you sure you want to enter this grade? (y/n)")){
+			    		PowerSchool.deleteAssignmentGrade(Integer.parseInt(assignmentId), selectedStudentIdButItsActuallyAnInteger);
 			    		if(PowerSchool.enterGrade(courseId, Integer.parseInt(assignmentId), selectedStudentIdButItsActuallyAnInteger, newGrade, Integer.parseInt(points), true) == 1) {
 			    			System.out.println("Successfully entered grade.");
 			    		}else {
