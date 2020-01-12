@@ -369,6 +369,7 @@ public class PowerSchool {
          
          return students;
      }
+    
      
      public static ArrayList<Teacher> getTeachersByDepartment(int department) {
          ArrayList<Teacher> teachers = new ArrayList<Teacher>();
@@ -414,6 +415,43 @@ public class PowerSchool {
              try (ResultSet rs = stmt.executeQuery()) {
             	 while(rs.next()) {
                      students.add(new Student(rs));                 
+            	 }
+             }
+         } catch (SQLException e) {
+             e.printStackTrace();
+         }
+         
+         return students;
+     }
+     
+     public static ArrayList<String> getStudentById(int id) {
+ 		ArrayList<String> courses = new ArrayList<String>();
+ 		
+ 		try (Connection conn = getConnection();
+        		 PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_STUDENT_BY_ID)) {
+        	 stmt.setString(1, String.valueOf(id));        
+             try (ResultSet rs = stmt.executeQuery()) {
+            	 while(rs.next()) {
+                     courses.add(rs.getString("first_name"));    
+                     courses.add(rs.getString("last_name"));    
+            	 }
+             }
+         } catch (SQLException e) {
+             e.printStackTrace();
+         }
+ 		
+ 		return courses;
+ 	}
+     
+     public static ArrayList<String> getStudentsByCourseWithoutObject(String courseNo) {
+         ArrayList<String> students = new ArrayList<String>();
+         
+         try (Connection conn = getConnection();
+        		 PreparedStatement stmt = conn.prepareStatement(QueryUtils.GET_STUDENTS_BY_COURSE)) {
+        	 stmt.setString(1, courseNo);        
+             try (ResultSet rs = stmt.executeQuery()) {
+            	 while(rs.next()) {
+                     students.add(rs.getString("student_id"));                 
             	 }
              }
          } catch (SQLException e) {

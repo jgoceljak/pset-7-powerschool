@@ -1,11 +1,14 @@
 package com.apcsa.controller;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import com.apcsa.data.PowerSchool;
+import com.apcsa.data.QueryUtils;
 import com.apcsa.model.Student;
 import com.apcsa.model.Teacher;
 import com.apcsa.model.User;
@@ -554,6 +557,8 @@ public class Application {
 			return PowerSchool.getlastAssignmentId() + 1;
 		}
 	}
+	
+	
 
 	private void deleteAssignment() {
 		int courseId = getCourseId();
@@ -612,9 +617,91 @@ public class Application {
 	}
 	
     private void enterGrade() {
-    	// TODO Auto-generated method stub
+        int courseId = getCourseId();
+        String courseNo = PowerSchool.getCourseNumber(courseId);
+        System.out.println(courseId);
+        System.out.println("\nChoose a marking period or exam status.\n");
+		System.out.println("[1] MP1 assignment.");
+        System.out.println("[2] MP2 assignment.");
+        System.out.println("[3] MP3 assignment.");
+        System.out.println("[4] MP4 assignment.");
+        System.out.println("[5] Midterm exam.");
+        System.out.println("[6] Final exam.");
+        System.out.print("\n::: ");
+        int markingPeriod = Utils.getInt(in, -1);
+        while(markingPeriod <= 0 || markingPeriod > 6) {
+        	if(markingPeriod <= 0 || markingPeriod > 6) {
+            	System.out.println("\nInvalid Selection.");
+       	 	}
+        	System.out.println("\nChoose a marking period or exam status.\n");
+    		System.out.println("[1] MP1 assignment.");
+            System.out.println("[2] MP2 assignment.");
+            System.out.println("[3] MP3 assignment.");
+            System.out.println("[4] MP4 assignment.");
+            System.out.println("[5] Midterm exam.");
+            System.out.println("[6] Final exam.");
+            System.out.print("\n::: ");
+            markingPeriod = Utils.getInt(in, -1);                 
+        }
+        
+        ArrayList<String> assignments = PowerSchool.getAssignments(courseId, markingPeriod);
+		ArrayList<String> pointValues = PowerSchool.getPointValues(courseId, markingPeriod);
+		 
+		int assignmentSelection = -1;
+		 if(!assignments.isEmpty()) {
+		        while(assignmentSelection <= 0 || assignmentSelection > assignments.size()) {
+		       	 int j = 1;
+		            for (String i: assignments) {
+		                System.out.println("["+ j++ + "] " + i + " (" + pointValues.get(j-2) + " pts)");
+		            }
+		       	 System.out.print("\n::: ");
+		       	assignmentSelection = Utils.getInt(in, -1);
+		       	 if(assignmentSelection <= 0 || assignmentSelection > assignments.size()) {
+		       		 System.out.println("\nInvalid Selection.\n");
+		       	 }
+		        }
+		}   
+		 
+		System.out.println("\nChoose a student.");
+		
+			ArrayList<Student> students = PowerSchool.getStudentsByCourse(courseNo);
+	    	
+	    	if (students.isEmpty()) {
+	            System.out.println("\nNo students to display.");
+	        } else {
+	            System.out.println();
+	            
+	            int i = 1;
+	            for (Student student : students) {
+	                System.out.println("[" + i++ + "] " + student.getName());
+	            } 
+	        }
+	    
+	    	ArrayList<String> availableStudents = PowerSchool.getStudentsByCourseWithoutObject(courseNo);
+	    	int selectedStudent = Utils.getInt(in, -1);
+	    	String selectedStudentId = availableStudents.get(selectedStudent);
+	    	int selectedStudentIdButItsActuallyAnInteger = Integer.parseInt(selectedStudentId) - 1;
+	    	System.out.println(assignmentSelection);
+	    	String title = assignments.get(assignmentSelection-1);
+	    	String points = pointValues.get(assignmentSelection-1);
     	
-	}
+	    	String assignmentDescription = "Assignment: " + title + " (" + points + " pts)";
+	    	
+	    	System.out.println(assignmentDescription);
+	    	
+	    	ArrayList<String> studentName = PowerSchool.getStudentById(selectedStudentIdButItsActuallyAnInteger);
+	    	String studentLastName = studentName.get(1);
+	    	String studentFirstName = studentName.get(0);
+	    	
+	    	System.out.println("Student: " + studentLastName + ", " + studentFirstName);
+	    	
+	    	
+	    
+}
+    
+
+
+
 	
 	 private String getCourseSelectionTeacher() {
 		 Teacher teacher = PowerSchool.getTeacher(activeUser);
