@@ -790,7 +790,7 @@ public class PowerSchool {
 	            
 	            try (ResultSet rs = stmt.executeQuery()) {
 
-	           		return rs.getInt("assignment_id");                 
+	           		return rs.getInt(2);                 
 	            }
 	        } catch (SQLException e) {
 	            e.printStackTrace();
