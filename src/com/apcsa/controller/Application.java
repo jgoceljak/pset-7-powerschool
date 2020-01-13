@@ -604,8 +604,9 @@ public class Application {
 		        }
 		        String title = assignments.get(assignmentSelection-1);
 		        int assignemntId = PowerSchool.getAssignmentId(courseId, markingPeriod, title);
-		        if(Utils.confirm(in, "\nAre you sure you want to create this assignment? (y/n) ")) {
+		        if(Utils.confirm(in, "\nAre you sure you want to delete this assignment? (y/n) ")) {
 		        	if(PowerSchool.deleteAssignment(courseId, markingPeriod, title) == 1 && PowerSchool.deleteAssignmentGrades(assignemntId, courseId) ==1 ) {
+		        		
 		        		System.out.println("\nSuccessfully deleted " + title + ".");		        		
 		        	}else {
 		        		System.out.println("\nError deleting assignment.");
